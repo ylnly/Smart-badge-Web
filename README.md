@@ -1,26 +1,25 @@
 # 次元星徽 DIMENSION STAR · 官网展示页
 
-[Smart-badge](https://github.com/ylnly/Smart-badge) 的产品展示页，是一个可离线运行的纯静态站点。品牌 **麦谷 My Goo**，演示角色 **爱莉希雅 / ELYSIA**。
+> **线上地址：<https://ylnly.github.io/Smart-badge-Web/>**
+> 发给别人看用这个，公网可访问，手机也能打开。
+
+[Smart-badge](https://github.com/ylnly/Smart-badge) 的产品展示页，纯静态、可离线运行。品牌 **麦谷 My Goo**，演示角色 **爱莉希雅 / ELYSIA**。
 
 技术路线：**本地 ASR（FunASR Paraformer）+ 云端 LLM + 本地 TTS（CosyVoice 3.0）**，推理跑在 Windows + RTX 5070，终端为 ESP32-S3-Touch-LCD-1.85B。
 
-## 页面结构
+## 三种打开方式
 
-深色游戏官网风格的滚动叙事，共五个章节：
+| 方式 | 地址 | 谁能看 |
+|---|---|---|
+| **线上（推荐）** | <https://ylnly.github.io/Smart-badge-Web/> | 所有人，发链接即可 |
+| 本机预览 | <http://127.0.0.1:8080/> | **只有自己这台电脑**，需先启动本地服务器 |
+| 直接开文件 | 双击 `index.html` | 只有自己，不需要 Node |
 
-| 章节 | 内容 |
-|---|---|
-| Hero | 品牌主视觉、爱莉希雅立绘、产品定位与核心卖点 |
-| 角色 | 角色卡机制：人设、语气、记忆边界，随徽章一起佩戴 |
-| 屏幕界面 | 1.85″ 圆形屏（360×360）的真实 UI 设计稿 |
-| 语音链路 | ASR → LLM → TTS → 播放全链路，以及对白示例与分段延迟 |
-| 规格 / 路线 | 硬件规格双表（当前验证平台 / 量产品目标）与迭代计划 |
+> `127.0.0.1` 是回环地址，永远指向「当前这台电脑」。别人点它等于在自己电脑上找 8080 端口，打不开 —— 分享请用上面的线上地址。
 
-页面内所有文案支持中英切换（右下角语言按钮），切换不刷新、不重新加载资源。
+## 本机预览（可选，仅开发者用）
 
-## 本地运行
-
-需要 Node.js 18+，无需安装任何依赖：
+本机已装 Node，直接运行，无需安装任何依赖：
 
 ```powershell
 node serve.mjs
@@ -30,13 +29,27 @@ node serve.mjs
 
 `serve.mjs` 是零依赖静态服务器，提供正确的 MIME 类型（`.png`、`.jpg`、`.css`、`.js` 等）、路径穿越防护与 `no-store` 缓存策略。
 
-不装 Node 也能直接双击 `index.html` 打开 —— 页面只依赖相对路径的本地资源，没有构建步骤。
+不想开服务器也可以双击 `index.html` —— 页面只依赖相对路径的本地资源，没有构建步骤。
+
+## 页面结构
+
+深色游戏官网风格的滚动叙事，五个章节：
+
+| 章节 | 内容 |
+|---|---|
+| Hero | 品牌主视觉、爱莉希雅立绘、产品定位与核心卖点 |
+| 角色 | 角色卡机制：人设、语气、记忆边界，随徽章一起佩戴 |
+| 屏幕界面 | 1.85″ 圆形屏（360×360）的真实 UI 设计稿 |
+| 语音系统 | ASR → LLM → TTS → 播放全链路，对白示例与分段延迟 |
+| 硬件规格 / 路线 | 规格双表（当前验证平台 / 量产品目标）与迭代计划 |
+
+页面文案支持中英切换（导航栏 EN 按钮），切换不刷新、不重新加载资源。
 
 ## 部署
 
-站点是纯静态文件，仓库根目录即可作为站点根：
+站点是纯静态文件，仓库根目录即站点根：
 
-- **GitHub Pages**：仓库 Settings → Pages → 选择 `main` 分支根目录发布即可。
+- **GitHub Pages**（当前使用）：Settings → Pages → `main` 分支根目录。已配置完成，推送到 `main` 会自动重建。
 - **任意静态托管**：把根目录文件原样上传（Nginx、Vercel、Cloudflare Pages、对象存储均可）。
 - 资源引用为相对路径（`assets/...`），因此也支持部署在子目录下，无需改配置。
 
@@ -45,7 +58,7 @@ node serve.mjs
 ```text
 Smart-badge-Web/
 ├── index.html                    单文件页面（HTML + CSS + JS，无构建）
-├── serve.mjs                     零依赖本地静态服务器
+├── serve.mjs                     零依赖本地静态服务器（仅本机预览用）
 └── assets/
     ├── mascot.png                角色立绘 爱莉希雅（Q 版，透明底）
     ├── product-front-clean.png   产品正面实拍（已抠图、屏幕反光已清除）
@@ -56,4 +69,4 @@ Smart-badge-Web/
 ## 说明
 
 - 角色立绘为演示素材，版权归原权利方；仅用于项目展示，不作商业用途。
-- 页面字体走 Google Fonts（Noto Sans SC / Noto Serif SC / Chakra Petch），离线环境下会自动回退到系统字体。
+- 字体走 Google Fonts（Noto Sans SC / Noto Serif SC / Chakra Petch），加载不到时自动回退系统字体，不影响阅读。
