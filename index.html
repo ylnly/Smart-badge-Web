@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="cDpiKihZaq4SuwDy4BvkAD">
+<head data-page-node-id="XIzPhqGoiVTiohA2rfwwg6">
+<meta charset="UTF-8" data-page-node-id="ChcrCORMQmteoZYJUfYP9D" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="skK9pwhbCjEQH8oyI5BH1x" />
+<title>次元星徽 DIMENSION STAR · 麦谷 · 让角色住进徽章</title>
+<meta name="description" content="次元星徽（麦谷 My Goo 出品）—— 可佩戴的 AI 陪伴徽章。本地 ASR + 云端 LLM + 本地 TTS 语音架构，角色「爱莉希雅」实时语音陪伴。" data-page-node-id="3L7oZYmeSZuxLKLg4ujzKG" />
+<link rel="preconnect" href="https://fonts.googleapis.com" data-page-node-id="mk8SkAi77BKvaaDkO4XyZw" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin data-page-node-id="VADTiILDJHrxCzYYfD78gg" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@600;700;900&family=Chakra+Petch:wght@400;600;700&display=swap" rel="stylesheet" data-page-node-id="yCTDiRjfq9oWwysClMTvFE" />
+<style>
+:root{
+  --bg:#06040d;
+  --ink:#f6f1ff;
+  --dim:#9b91b8;
+  --dim-2:#6d6486;
+  --pink:#ff6fae;
+  --rose:#ffb3d4;
+  --violet:#a274ff;
+  --cyan:#63e6ea;
+  --gold:#ffd48a;
+  --line:rgba(255,255,255,.085);
+  --line-2:rgba(255,255,255,.16);
+  --sans:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --mono:"Chakra Petch",ui-monospace,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.75;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+::selection{background:rgba(255,111,174,.35);color:#fff}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#08060f}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--pink),var(--violet));border-radius:8px}
+
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-layer .orb{position:absolute;border-radius:50%;filter:blur(90px)}
+.orb-1{width:60vw;height:60vw;left:-18vw;top:-22vw;background:radial-gradient(circle,#ff5c9d 0%,transparent 62%);opacity:.30}
+.orb-2{width:55vw;height:55vw;right:-16vw;top:6vh;background:radial-gradient(circle,#8b5cff 0%,transparent 62%);opacity:.34}
+.orb-3{width:48vw;height:48vw;left:24vw;bottom:-26vw;background:radial-gradient(circle,#2ad6dd 0%,transparent 64%);opacity:.16}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+#petals{position:fixed;inset:0;z-index:1;pointer-events:none}
+
+.progress{position:fixed;top:0;left:0;height:2px;width:0;z-index:120;
+  background:linear-gradient(90deg,var(--pink),var(--violet),var(--cyan));box-shadow:0 0 14px rgba(255,111,174,.8)}
+
+header{position:fixed;top:0;left:0;right:0;z-index:100;transition:.45s cubic-bezier(.4,0,.2,1)}
+header:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,4,13,.9),rgba(6,4,13,0));pointer-events:none;transition:.4s}
+header.scrolled:before{background:rgba(6,4,13,.82);backdrop-filter:blur(18px) saturate(140%);border-bottom:1px solid var(--line)}
+.nav{max-width:1440px;margin:0 auto;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;transition:.4s}
+header.scrolled .nav{padding:12px 40px}
+.logo{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.logo .mark{width:34px;height:34px;position:relative;flex-shrink:0}
+.logo .mark:before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 140deg,var(--pink),var(--violet),var(--cyan),var(--pink));
+  -webkit-mask:radial-gradient(circle,transparent 42%,#000 44%);mask:radial-gradient(circle,transparent 42%,#000 44%);
+  animation:spin 9s linear infinite}
+.logo .mark:after{content:"";position:absolute;inset:11px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--pink) 70%);box-shadow:0 0 18px rgba(255,111,174,.9)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo .txt{font-family:var(--mono);font-weight:700;letter-spacing:.22em;font-size:15px;line-height:1.1}
+.logo .txt small,.logo .txt::after{content:"麦谷出品";display:block;font-family:var(--sans);font-size:10px;letter-spacing:.34em;color:var(--dim-2);font-weight:400;margin-top:3px}
+html[lang="en"] .logo .txt::after{content:"MY GOO STUDIO"}
+.menu{display:flex;align-items:center;gap:30px;margin-left:auto}
+.menu a{font-size:13.5px;letter-spacing:.1em;color:var(--dim);position:relative;padding:6px 0;transition:.3s;font-weight:500;white-space:nowrap}
+.menu a:after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:linear-gradient(90deg,var(--pink),var(--violet));transition:.35s;box-shadow:0 0 8px var(--pink)}
+.menu a:hover,.menu a.on{color:#fff}
+.menu a:hover:after,.menu a.on:after{width:100%}
+.nav-right{display:flex;align-items:center;gap:12px}
+.lang{font-family:var(--mono);font-size:12px;letter-spacing:.14em;font-weight:700;cursor:pointer;
+  border:1px solid var(--line-2);background:rgba(255,255,255,.04);color:#fff;
+  padding:9px 14px;border-radius:2px;transition:.3s;display:flex;align-items:center;gap:7px}
+.lang:hover{border-color:var(--pink);box-shadow:0 0 22px rgba(255,111,174,.35);background:rgba(255,111,174,.1)}
+.lang .dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.cta-sm{font-size:12.5px;letter-spacing:.08em;padding:11px 20px;border-radius:2px;font-weight:700;white-space:nowrap;
+  background:linear-gradient(100deg,var(--pink),#d05cff);color:#1a0310;transition:.35s}
+.cta-sm:hover{box-shadow:0 0 26px rgba(255,111,174,.65);transform:translateY(-1px)}
+.burger{display:none;width:40px;height:40px;border:1px solid var(--line-2);background:transparent;border-radius:2px;cursor:pointer;position:relative}
+.burger i{position:absolute;left:11px;width:18px;height:1.5px;background:#fff;transition:.3s}
+.burger i:nth-child(1){top:15px}.burger i:nth-child(2){top:20px}.burger i:nth-child(3){top:25px}
+
+.edge-text{position:fixed;left:18px;top:50%;transform:translateY(-50%);z-index:40;
+  writing-mode:vertical-rl;font-family:var(--mono);font-size:10px;letter-spacing:.5em;
+  color:rgba(255,255,255,.22);pointer-events:none}
+.edge-line{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;align-items:center;gap:14px;pointer-events:none}
+.edge-line span{width:1px;height:52px;background:linear-gradient(var(--line-2),transparent)}
+.edge-line b{writing-mode:vertical-rl;font-family:var(--mono);font-size:9.5px;letter-spacing:.4em;color:rgba(255,255,255,.25);font-weight:400}
+@media(max-width:1280px){.edge-text,.edge-line{display:none}}
+
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;z-index:2;overflow:hidden;padding:110px 0 30px}
+.hero .inner{max-width:1440px;margin:0 auto;padding:0 40px;width:100%;display:grid;grid-template-columns:1.02fr .98fr;gap:16px;align-items:center;position:relative;z-index:3}
+.hero-copy{position:relative}
+.kicker{display:inline-flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.4em;color:var(--rose);margin-bottom:26px;white-space:nowrap}
+.kicker:before{content:"";width:44px;height:1px;background:linear-gradient(90deg,transparent,var(--pink));box-shadow:0 0 10px var(--pink)}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:clamp(50px,8vw,110px);line-height:.94;letter-spacing:-.01em;position:relative}
+.hero h1 .l1{display:block;background:linear-gradient(96deg,#fff 8%,#ffd7e9 30%,var(--pink) 62%,#b57cff 96%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 34px rgba(255,111,174,.42))}
+.hero h1 .en{display:block;font-family:var(--mono);font-weight:700;font-size:clamp(12px,1.35vw,17px);
+  letter-spacing:.58em;color:rgba(255,255,255,.48);margin-top:22px;padding-left:6px}
+.hero-tag{margin:28px 0 0;font-size:clamp(14.5px,1.25vw,17px);color:#cfc6e4;font-weight:300;max-width:530px;line-height:2}
+.hero-tag .hl{color:#fff;font-weight:700;position:relative;white-space:nowrap}
+.hero-tag .hl:after{content:"";position:absolute;left:-2px;right:-2px;bottom:2px;height:8px;
+  background:linear-gradient(90deg,rgba(255,111,174,.5),rgba(162,116,255,.12));z-index:-1}
+.hero-acts{display:flex;align-items:center;gap:16px;margin-top:38px;flex-wrap:wrap}
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;padding:16px 32px;font-size:14px;
+  letter-spacing:.12em;font-weight:700;border-radius:2px;overflow:hidden;transition:.4s;cursor:pointer;border:none;font-family:var(--sans)}
+.btn-main{background:linear-gradient(100deg,var(--pink) 0%,#ff86c4 40%,#b477ff 100%);color:#210515;
+  box-shadow:0 10px 40px -8px rgba(255,111,174,.75),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 16px 50px -6px rgba(255,111,174,.95)}
+.btn-main:before{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-20deg);transition:.6s}
+.btn-main:hover:before{left:130%}
+.btn-ghost{background:rgba(255,255,255,.03);border:1px solid var(--line-2);color:#e9e2f7;backdrop-filter:blur(6px)}
+.btn-ghost:hover{border-color:var(--pink);color:#fff;background:rgba(255,111,174,.1);box-shadow:0 0 30px rgba(255,111,174,.22)}
+.btn .arw{transition:.35s}
+.btn:hover .arw{transform:translateX(4px)}
+
+.hero-stats{display:flex;margin-top:46px;border-top:1px solid var(--line);padding-top:24px;max-width:530px}
+.hero-stats div{flex:1;padding-right:12px}
+.hero-stats div+div{border-left:1px solid var(--line);padding-left:20px}
+.hero-stats b{display:block;font-family:var(--mono);font-size:clamp(18px,1.9vw,25px);font-weight:700;line-height:1.4;
+  background:linear-gradient(100deg,#fff,var(--rose));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-stats span{font-size:11px;letter-spacing:.12em;color:var(--dim-2)}
+
+.stage{position:relative;display:flex;justify-content:center;align-items:flex-end;min-height:min(74vh,700px)}
+.stage .shaft{position:absolute;left:50%;top:-14%;width:min(64%,420px);height:112%;transform:translateX(-50%);z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,214,236,.20),rgba(255,111,174,.07) 38%,rgba(162,116,255,.05) 62%,transparent 78%);
+  filter:blur(34px)}
+.stage .halo{position:absolute;bottom:4%;left:50%;transform:translateX(-50%);width:min(112%,600px);aspect-ratio:1;
+  border-radius:50%;background:radial-gradient(circle,rgba(255,111,174,.30),rgba(162,116,255,.12) 46%,transparent 68%);filter:blur(18px)}
+.stage .ring{position:absolute;bottom:8%;left:50%;transform:translateX(-50%);width:min(92%,500px);aspect-ratio:1;border-radius:50%;
+  border:1px solid rgba(255,255,255,.13)}
+.stage .ring.r2{width:min(76%,415px);border-style:dashed;border-color:rgba(255,111,174,.32);animation:spin 46s linear infinite}
+.stage .ring.r3{width:min(110%,595px);border-color:rgba(162,116,255,.16);animation:spin 80s linear infinite reverse}
+.stage .char{position:relative;z-index:3;height:min(68vh,650px);width:auto;object-fit:contain;
+  filter:drop-shadow(0 26px 60px rgba(255,111,174,.42)) drop-shadow(0 0 100px rgba(162,116,255,.34));
+  animation:breathe 6.5s ease-in-out infinite;will-change:transform}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.stage .floor{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:min(88%,520px);height:100px;
+  background:radial-gradient(ellipse at center,rgba(255,111,174,.35),transparent 70%);filter:blur(26px)}
+.float-tag{position:absolute;z-index:4;display:flex;align-items:center;gap:9px;padding:9px 14px;
+  background:rgba(12,8,22,.72);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(14px);border-radius:2px;
+  font-size:11.5px;letter-spacing:.05em;color:#efe8ff;animation:breathe 5s ease-in-out infinite;white-space:nowrap}
+.float-tag .d{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex-shrink:0}
+.tag-a{top:11%;left:0;animation-delay:.4s}
+.tag-b{top:33%;right:-3%;animation-delay:1.6s}
+.tag-c{bottom:29%;left:-5%;animation-delay:2.4s}
+@media(max-width:1080px){.float-tag{display:none}}
+
+.namecard{position:absolute;bottom:3%;right:0;z-index:5;text-align:right;padding:13px 20px;
+  background:linear-gradient(120deg,rgba(255,111,174,.16),rgba(10,7,20,.55));border:1px solid rgba(255,255,255,.15);
+  backdrop-filter:blur(12px);border-right:3px solid var(--pink)}
+.namecard b{display:block;font-family:var(--serif);font-size:24px;letter-spacing:.08em}
+.namecard span{font-family:var(--mono);font-size:10px;letter-spacing:.26em;color:var(--rose)}
+
+.scroll-hint{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:9px}
+.scroll-hint span{font-family:var(--mono);font-size:9px;letter-spacing:.42em;color:rgba(255,255,255,.4)}
+.scroll-hint i{width:1px;height:40px;background:linear-gradient(rgba(255,111,174,.9),transparent);position:relative;overflow:hidden}
+.scroll-hint i:after{content:"";position:absolute;top:-40px;left:0;width:1px;height:40px;background:#fff;animation:scrolldot 2.2s ease-in-out infinite}
+@keyframes scrolldot{0%{top:-40px}70%,100%{top:40px}}
+@media(max-width:1180px){.scroll-hint{display:none}}
+
+section.sec{position:relative;z-index:2;padding:clamp(80px,11vh,150px) 0}
+.wrap{max-width:1440px;margin:0 auto;padding:0 40px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:clamp(40px,5vw,66px);flex-wrap:wrap}
+.sec-head .left{position:relative;padding-left:clamp(0px,7.6vw,118px)}
+.num{font-family:var(--mono);font-size:clamp(40px,6vw,96px);font-weight:700;line-height:.78;
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.20);position:absolute;left:0;top:50%;transform:translateY(-50%);z-index:0;letter-spacing:-.02em}
+.sec-head h2{position:relative;font-family:var(--serif);font-weight:900;font-size:clamp(28px,4.2vw,52px);line-height:1.2;letter-spacing:.01em;z-index:1}
+.sec-head h2 em{font-style:normal;background:linear-gradient(100deg,var(--rose),var(--pink) 45%,var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sec-head .en{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.44em;color:var(--dim-2);margin-bottom:14px;text-transform:uppercase}
+.sec-head p{max-width:500px;color:var(--dim);font-size:14px;font-weight:300;line-height:2}
+
+.character{background:linear-gradient(180deg,transparent,rgba(255,111,174,.045) 30%,rgba(162,116,255,.06) 70%,transparent)}
+.char-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(30px,5vw,80px);align-items:center}
+.char-stage{position:relative;display:flex;justify-content:center;align-items:center;min-height:520px}
+.char-stage .plate{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:78%;aspect-ratio:1/1.04;
+  border:1px solid var(--line-2);background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));border-radius:4px;overflow:hidden}
+.char-stage .plate:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 22%,rgba(255,111,174,.30),transparent 62%)}
+.char-stage .plate:after{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:34px 34px;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 76%);
+  mask-image:radial-gradient(circle at 50% 40%,#000,transparent 76%)}
+.char-stage img{position:relative;z-index:2;height:min(60vh,520px);width:auto;object-fit:contain;
+  filter:drop-shadow(0 20px 44px rgba(0,0,0,.65)) drop-shadow(0 0 60px rgba(255,111,174,.28))}
+.char-stage .badge-float{position:absolute;z-index:3;top:2%;right:2%;width:92px;height:92px;border-radius:50%;
+  background:conic-gradient(from 200deg,rgba(255,111,174,.9),rgba(162,116,255,.9),rgba(99,230,234,.85),rgba(255,111,174,.9));
+  display:grid;place-items:center;animation:breathe 7s ease-in-out infinite;box-shadow:0 0 40px rgba(255,111,174,.5)}
+.char-stage .badge-float:before{content:"";position:absolute;inset:3px;border-radius:50%;background:#0a0714}
+.char-stage .badge-float b{position:relative;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-align:center;line-height:1.5;color:var(--rose)}
+
+.char-name{font-family:var(--serif);font-size:clamp(32px,3.8vw,50px);font-weight:900;line-height:1.1}
+.char-name small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.34em;color:var(--dim-2);margin-top:14px;font-weight:400}
+.char-quote{position:relative;margin:26px 0 26px;padding:20px 24px;border-left:2px solid var(--pink);
+  background:linear-gradient(90deg,rgba(255,111,174,.10),transparent 80%);font-size:15px;color:#e7ddf6;font-weight:300;line-height:1.95}
+.char-quote .who{display:block;margin-top:12px;font-size:11px;letter-spacing:.16em;color:var(--pink);font-weight:500}
+.traits{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
+.trait{font-size:12.5px;padding:7px 15px;border:1px solid var(--line-2);color:#d9d0ec;background:rgba(255,255,255,.03);
+  border-radius:2px;letter-spacing:.05em;transition:.3s}
+.trait:hover{border-color:var(--pink);color:#fff;background:rgba(255,111,174,.12);box-shadow:0 0 20px rgba(255,111,174,.25)}
+.bars{display:grid;gap:15px;max-width:440px}
+.bar-row{display:grid;grid-template-columns:70px 1fr 40px;align-items:center;gap:14px}
+.bar-row .k{font-size:12.5px;color:var(--dim);letter-spacing:.06em}
+.bar-row .v{font-family:var(--mono);font-size:12px;color:var(--rose);text-align:right}
+.bar{height:4px;background:rgba(255,255,255,.08);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--pink),var(--violet));
+  box-shadow:0 0 12px rgba(255,111,174,.8);transition:width 1.6s cubic-bezier(.2,.8,.2,1)}
+@media(max-width:900px){.char-grid{grid-template-columns:1fr}.char-stage{order:-1;min-height:400px}
+  .sec-head .left{padding-left:0}.num{display:none}}
+
+.voice{background:linear-gradient(180deg,transparent,#08060f 18%,#08060f 82%,transparent)}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);position:relative;margin-bottom:14px}
+.flow:before{content:"";position:absolute;top:52px;left:6%;right:6%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,111,174,.55),rgba(162,116,255,.55),rgba(99,230,234,.5),transparent)}
+.flow:after{content:"";position:absolute;top:52px;left:6%;width:88%;height:1px;
+  background:linear-gradient(90deg,transparent,#fff,transparent);background-size:22% 100%;background-repeat:no-repeat;
+  animation:sweep 4.5s linear infinite;opacity:.8}
+@keyframes sweep{0%{background-position:-22% 0}100%{background-position:122% 0}}
+.fnode{position:relative;text-align:center;padding:0 8px}
+.fnode .dot{width:22px;height:22px;margin:41px auto 24px;border-radius:50%;border:1px solid var(--line-2);
+  background:#0a0714;position:relative;z-index:2;display:grid;place-items:center;transition:.4s}
+.fnode .dot:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--dim-2);transition:.4s}
+.fnode:nth-child(2) .dot:before{background:var(--pink)}
+.fnode:nth-child(3) .dot:before{background:var(--violet)}
+.fnode:nth-child(4) .dot:before{background:var(--cyan)}
+.fnode:nth-child(5) .dot:before{background:var(--gold)}
+.fnode:hover .dot{border-color:#fff;box-shadow:0 0 22px rgba(255,255,255,.35);transform:scale(1.2)}
+.fnode .ic{font-size:23px;margin-bottom:10px;opacity:.95;line-height:1.2}
+.fnode h4{font-size:15px;font-weight:700;letter-spacing:.03em;margin-bottom:6px}
+.fnode .sm{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--dim-2);margin-bottom:9px;min-height:15px}
+.fnode p{font-size:12px;color:var(--dim);font-weight:300;line-height:1.85;padding:0 2px}
+.flow-cap{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.28em;color:var(--dim-2);margin-top:20px}
+
+.voice-body{display:grid;grid-template-columns:1.02fr .98fr;gap:clamp(20px,2.6vw,44px);align-items:start}
+.panel{border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.012));
+  backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.panel:before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,111,174,.8),rgba(162,116,255,.5),transparent)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:15px 22px;border-bottom:1px solid var(--line);gap:12px}
+.panel-head b{font-family:var(--mono);font-size:11px;letter-spacing:.22em;color:#fff;font-weight:600}
+.panel-head .st{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--dim-2)}
+.panel-head .st i{width:6px;height:6px;border-radius:50%;background:#3ddc84;box-shadow:0 0 9px #3ddc84;animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.talk{padding:22px;display:grid;gap:14px}
+.msg{display:flex;gap:12px;align-items:flex-start}
+.msg .av{width:38px;height:38px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,.2);overflow:hidden;
+  background-image:url("assets/mascot.png");background-size:212% auto;background-position:50% 5%;background-color:#1a1226}
+.msg .av.user{background:none;background-color:rgba(255,255,255,.08);display:grid;place-items:center;font-size:14px;color:#cfc6e4}
+.bub{background:rgba(255,255,255,.06);border:1px solid var(--line);padding:11px 16px;font-size:13px;color:#e9e2f7;
+  font-weight:300;line-height:1.85;max-width:86%}
+.bub.me{background:rgba(255,111,174,.12);border-color:rgba(255,111,174,.32)}
+.msg.row-end{flex-direction:row-reverse}
+.msg.row-end .bub{background:rgba(162,116,255,.14);border-color:rgba(162,116,255,.3)}
+.meta{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--dim-2);padding-left:50px;margin-top:-6px}
+.lat{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);margin:0 22px 22px}
+.lat div{background:#0a0713;padding:13px 8px;text-align:center}
+.lat b{display:block;font-family:var(--mono);font-size:15px;color:var(--rose);font-weight:700}
+.lat span{font-size:9.5px;letter-spacing:.1em;color:var(--dim-2)}
+
+.caps{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.cap{border:1px solid var(--line);background:rgba(255,255,255,.028);padding:22px 20px;position:relative;overflow:hidden;transition:.45s}
+.cap:after{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(var(--pink),var(--violet));transform:scaleY(0);transform-origin:top;transition:.45s}
+.cap:hover{background:rgba(255,255,255,.06);border-color:var(--line-2);transform:translateY(-3px)}
+.cap:hover:after{transform:scaleY(1)}
+.cap .n{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:var(--dim-2);margin-bottom:12px}
+.cap h4{font-size:14.5px;margin-bottom:8px;letter-spacing:.02em}
+.cap p{font-size:12px;color:var(--dim);font-weight:300;line-height:1.9}
+@media(max-width:1000px){.voice-body{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,1fr);gap:26px 0}
+  .flow:before,.flow:after{display:none}.fnode .dot{margin:0 auto 14px}.caps{grid-template-columns:1fr}}
+
+.road{background:linear-gradient(180deg,transparent,rgba(162,116,255,.05),transparent)}
+.phases{border-top:1px solid var(--line)}
+.phase{display:grid;grid-template-columns:86px 1fr 190px;gap:24px;align-items:center;
+  padding:25px 16px;border-bottom:1px solid var(--line);position:relative;transition:.4s}
+.phase:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,111,174,.13),rgba(162,116,255,.05) 45%,transparent);opacity:0;transition:.4s}
+.phase:hover:before{opacity:1}
+.phase:hover{padding-left:24px}
+.phase .pn{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--dim-2);position:relative;transition:.4s}
+.phase:hover .pn{color:var(--pink)}
+.phase h3{position:relative;font-size:clamp(16px,1.5vw,20px);font-weight:700;letter-spacing:.02em;margin-bottom:6px}
+.phase p{position:relative;font-size:12.5px;color:var(--dim);font-weight:300;line-height:1.85}
+.phase .tag{position:relative;justify-self:end;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  padding:6px 13px;border:1px solid var(--line-2);color:var(--dim);white-space:nowrap;transition:.4s}
+.phase:hover .tag{border-color:var(--pink);color:var(--pink);box-shadow:0 0 18px rgba(255,111,174,.3)}
+@media(max-width:820px){.phase{grid-template-columns:58px 1fr;gap:14px}.phase .tag{grid-column:2;justify-self:start;margin-top:6px}}
+
+.specs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.spec{background:#08060f;padding:36px 26px;position:relative;overflow:hidden;transition:.5s}
+.spec:hover{background:#0d0919}
+.spec:before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle at 30% 20%,rgba(255,111,174,.16),transparent 42%);opacity:0;transition:.6s}
+.spec:hover:before{opacity:1}
+.spec .k{font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--dim-2);margin-bottom:18px;position:relative}
+.spec .v{font-family:var(--mono);font-size:clamp(19px,2vw,28px);font-weight:700;line-height:1.3;position:relative;
+  background:linear-gradient(100deg,#fff,#ffd7e9 60%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.spec .d{font-size:11.5px;color:var(--dim);margin-top:12px;font-weight:300;position:relative;line-height:1.8}
+@media(max-width:900px){.specs-grid{grid-template-columns:1fr 1fr}}
+
+.hw{display:grid;grid-template-columns:1fr;gap:clamp(24px,3vw,54px);margin-top:clamp(44px,6vw,80px);align-items:center}
+.hw-list{border-top:1px solid var(--line)}
+.hw-row{display:flex;justify-content:space-between;gap:20px;padding:15px 2px;border-bottom:1px solid var(--line);font-size:13px}
+.hw-row .kk{color:var(--dim);font-weight:300;letter-spacing:.03em;white-space:nowrap}
+.hw-row .vv{color:#fff;font-family:var(--mono);font-size:12px;text-align:right}
+.badge-render{position:relative;aspect-ratio:1/.94;display:grid;place-items:center}
+.badge-render .disc{width:74%;aspect-ratio:1;border-radius:50%;position:relative;
+  background:conic-gradient(from 200deg,#1d1626,#4a3b5a 12%,#8e7aa0 26%,#2a2133 38%,#161019 52%,#5b4a6b 66%,#9d8aac 78%,#241c2c 90%,#1d1626);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 2px 14px rgba(255,255,255,.16),
+    0 40px 90px -30px rgba(255,111,174,.45),0 0 0 1px rgba(0,0,0,.6);display:grid;place-items:center}
+.badge-render .disc:before{content:"";position:absolute;inset:7%;border-radius:50%;
+  background:radial-gradient(circle at 40% 30%,#1a1028,#0a0614 70%);border:1px solid rgba(255,255,255,.14)}
+.badge-render .disc:after{content:"";position:absolute;inset:-9%;border-radius:50%;border:1px dashed rgba(255,255,255,.14);animation:spin 34s linear infinite}
+.badge-render .screen{position:relative;z-index:2;width:60%;aspect-ratio:1;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 50% 40%,rgba(255,111,174,.22),#120a20 70%);
+  box-shadow:inset 0 0 30px rgba(255,111,174,.35),0 0 40px rgba(255,111,174,.22)}
+.badge-render .screen img{position:absolute;bottom:-4%;left:50%;transform:translateX(-50%);width:86%;
+  filter:drop-shadow(0 6px 16px rgba(0,0,0,.7))}
+.badge-render .scan{position:absolute;left:0;right:0;height:22%;z-index:3;
+  background:linear-gradient(180deg,transparent,rgba(255,255,255,.14),transparent);animation:scan 4.2s ease-in-out infinite}
+@keyframes scan{0%,100%{top:-22%}50%{top:100%}}
+.badge-render .lb{position:absolute;bottom:2%;left:0;right:0;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.3em;color:var(--dim-2)}
+@media(max-width:900px){.hw{grid-template-columns:1fr}.badge-render{order:-1}}
+
+.outro{position:relative;z-index:2;padding:clamp(90px,14vh,170px) 0 0;text-align:center;overflow:hidden}
+.outro .q{font-family:var(--serif);font-size:clamp(24px,3.4vw,44px);font-weight:700;line-height:1.65;max-width:900px;margin:0 auto 18px;padding:0 30px}
+.outro .q em{font-style:normal;background:linear-gradient(100deg,var(--rose),var(--pink),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.outro .s{color:var(--dim);font-size:13px;letter-spacing:.14em;padding:0 30px}
+.marquee{margin-top:clamp(50px,8vh,90px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  overflow:hidden;padding:18px 0;background:rgba(255,255,255,.02)}
+.marquee .track{display:flex;width:max-content;animation:marq 30s linear infinite}
+.marquee span{font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:rgba(255,255,255,.3);padding:0 26px;white-space:nowrap}
+.marquee span i{font-style:normal;color:var(--pink);margin-right:22px}
+@keyframes marq{to{transform:translateX(-50%)}}
+.giant{font-family:var(--mono);font-weight:700;font-size:clamp(44px,13vw,190px);line-height:.86;letter-spacing:-.02em;
+  color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.10);white-space:nowrap;text-align:center;
+  user-select:none;margin-top:clamp(40px,6vh,70px)}
+footer{position:relative;z-index:2;padding:10px 0 34px;border-top:1px solid var(--line)}
+.f-in{max-width:1440px;margin:0 auto;padding:24px 40px 0;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  font-size:11px;color:var(--dim-2);letter-spacing:.08em}
+.f-in .dis{max-width:520px;line-height:1.9;font-size:10.5px;color:#514a66}
+
+.prod-gallery{position:relative;display:grid;grid-template-columns:1.16fr .84fr;gap:clamp(16px,2.2vw,26px);
+  align-items:start;margin-top:clamp(44px,6vw,74px);counter-reset:shot}
+.prod-gallery:before{content:"";position:absolute;left:4%;right:4%;top:-8%;height:82%;z-index:0;pointer-events:none;
+  background:radial-gradient(48% 62% at 26% 22%,rgba(255,111,174,.22),transparent 72%),
+             radial-gradient(46% 58% at 80% 52%,rgba(162,116,255,.22),transparent 72%);
+  filter:blur(46px)}
+.prod-card{position:relative;margin:0;counter-increment:shot;background:none;border:0;
+  transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.prod-card:nth-child(2){margin-top:clamp(28px,6.6vw,104px)}
+.prod-card .ph{position:relative;display:grid;place-items:center;aspect-ratio:16/9;padding:clamp(10px,2vw,26px);
+  background:none}
+.prod-card:nth-child(2) .ph{aspect-ratio:1/1}
+.prod-card .ph:before{content:"";position:absolute;left:50%;bottom:9%;width:58%;height:7%;transform:translateX(-50%);
+  border-radius:50%;z-index:0;pointer-events:none;filter:blur(16px);
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.62),rgba(0,0,0,.26) 55%,transparent 78%)}
+.prod-card .ph img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;position:relative;z-index:1;
+  transition:transform 1s cubic-bezier(.2,.8,.2,1);
+  filter:drop-shadow(0 24px 34px rgba(0,0,0,.85))}
+.prod-card:nth-child(2) .ph img{max-height:80%}
+.prod-card:hover .ph img{transform:translateY(-10px) scale(1.028)}
+.prod-card .tag{position:absolute;top:16px;left:16px;z-index:3;display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;line-height:1;padding:7px 13px;
+  border-radius:999px;background:rgba(8,5,16,.6);backdrop-filter:blur(14px) saturate(160%);
+  border:1px solid rgba(255,255,255,.15);color:var(--rose);box-shadow:0 10px 26px -14px #000}
+.prod-card .tag:before{content:"";width:5px;height:5px;border-radius:50%;flex-shrink:0;
+  background:var(--pink);box-shadow:0 0 9px var(--pink)}
+.prod-card .cap{display:flex;align-items:center;gap:14px;margin-top:clamp(8px,1.4vw,16px);
+  padding:16px 2px 0;border-top:1px solid var(--line)}
+.prod-card .cap:before{content:"0" counter(shot);font-family:var(--mono);font-size:13px;font-weight:700;
+  letter-spacing:.04em;line-height:1;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.32);flex-shrink:0}
+.prod-card .cap b{flex:1;font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;color:#fff;font-weight:600}
+.prod-card .cap span{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--dim);
+  text-align:right;line-height:1.65;padding-left:16px;border-left:1px solid var(--line)}
+@media(max-width:760px){
+  .prod-gallery{grid-template-columns:1fr;gap:16px}
+  .prod-card:nth-child(1){margin-top:0}
+  .prod-card .ph{padding:6px}
+  .prod-card .tag{top:12px;left:12px;font-size:9px;padding:6px 11px}
+  .prod-card .cap{padding:14px 16px 16px;gap:11px}
+  .prod-card .cap span{font-size:9px;padding-left:12px}
+}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv-l{opacity:0;transform:translateX(-28px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv-l.in{opacity:1;transform:none}
+
+@media(max-width:1180px){
+  .menu{position:fixed;inset:0 0 0 auto;width:min(78vw,340px);background:rgba(8,6,16,.97);backdrop-filter:blur(20px);
+    flex-direction:column;align-items:flex-start;justify-content:center;gap:28px;padding:0 40px;
+    transform:translateX(100%);transition:.5s cubic-bezier(.4,0,.2,1);border-left:1px solid var(--line);z-index:99}
+  .menu.open{transform:none}
+  .menu a{font-size:20px;font-family:var(--serif);letter-spacing:.06em}
+  .burger{display:block;order:3}
+  .cta-sm{display:none}
+}
+@media(max-width:980px){
+  .nav,.wrap{padding-left:22px;padding-right:22px}
+  .nav{gap:10px}
+  .logo .txt{font-size:12.5px;letter-spacing:.16em}
+  .logo{min-width:0;overflow:hidden}
+  .nav-right{margin-left:auto;flex-shrink:0}
+  .logo .txt small,.logo .txt::after{font-size:9px;letter-spacing:.24em}
+  .logo .mark{width:30px;height:30px}
+  .lang{padding:8px 11px;font-size:11px}
+  .hero{min-height:auto;padding:96px 0 46px}
+  .hero .inner{grid-template-columns:1fr;gap:0;padding:0 22px}
+  .stage{min-height:auto;margin-top:26px}
+  .stage .char{height:min(46vh,380px)}
+  .stage .ring,.stage .halo,.stage .floor,.stage .shaft{display:none}
+  .namecard{position:relative;right:auto;bottom:auto;margin:18px auto 0;text-align:center;border-right:none;border-bottom:3px solid var(--pink);width:max-content}
+  .hero-stats{max-width:none}
+  .lat{grid-template-columns:1fr 1fr}
+  .msg .bub{max-width:100%}
+}
+/* ================= 02 · SCREEN UI ================= */
+.ui-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.88fr);gap:clamp(26px,4.6vw,68px);align-items:center}
+.ui-stage{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(6px,1.4vw,18px) 0}
+.ui-halo{position:absolute;left:50%;top:50%;width:92%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,186,228,.32),rgba(162,116,255,.24) 46%,transparent 72%);filter:blur(48px)}
+.ui-orbit{position:absolute;left:50%;top:50%;width:84%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  border:1px dashed rgba(255,255,255,.09);pointer-events:none}
+.ui-orbit:before{content:"";position:absolute;left:6%;top:16%;width:5px;height:5px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 14px 4px rgba(99,230,234,.55)}
+
+.dev{position:relative;width:min(100%,430px);aspect-ratio:1;border-radius:50%;padding:clamp(7px,1vw,12px);
+  background:conic-gradient(from 200deg,#4b3a5e,#141020 16%,#5e4c75 34%,#0f0b18 52%,#47375b 70%,#120d1c 86%,#3e3050);
+  box-shadow:0 48px 92px -44px rgba(255,111,174,.55),0 30px 70px -30px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.10);
+  animation:uiFloat 11s ease-in-out infinite}
+.dev:before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;z-index:3;mix-blend-mode:screen;
+  background:linear-gradient(148deg,rgba(255,255,255,.30),transparent 24%,transparent 74%,rgba(255,255,255,.14))}
+.dev:after{content:"";position:absolute;inset:clamp(4px,.7vw,8px);border-radius:50%;pointer-events:none;z-index:4;
+  box-shadow:0 0 0 1px rgba(0,0,0,.5),0 0 26px rgba(12,6,20,.6) inset}
+
+.scr{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;
+  background:radial-gradient(circle at 48% 38%,#fff4fb 0%,#fbe0f6 25%,#eed3f7 50%,#d8c2f4 76%,#c7b0ec 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.4) inset}
+.scr .ui-shot{width:100%;height:100%;object-fit:cover;display:block}
+.ui-note{margin-top:clamp(12px,1.8vw,20px);text-align:center;font-family:var(--mono);font-size:10px;
+  letter-spacing:.16em;color:var(--dim);text-transform:uppercase}
+
+.ui-side{display:flex;flex-direction:column;gap:clamp(15px,1.9vw,24px)}
+.ui-item{display:grid;grid-template-columns:40px 1fr;gap:clamp(12px,1.4vw,18px);padding-bottom:clamp(14px,1.8vw,22px);border-bottom:1px solid var(--line)}
+.ui-item>b{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--rose);padding-top:4px}
+.ui-item h4{font-family:var(--serif);font-size:clamp(16px,1.45vw,19px);font-weight:700;letter-spacing:.02em;color:#fff;margin-bottom:5px}
+.ui-item p{font-size:13px;font-weight:300;line-height:1.85;color:var(--dim)}
+.ui-spec{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  background:linear-gradient(120deg,rgba(255,255,255,.05),transparent)}
+.ui-spec>div{padding:13px 16px;border-right:1px solid var(--line)}
+.ui-spec>div:last-child{border-right:0}
+.ui-spec b{display:block;font-family:var(--mono);font-size:16px;font-weight:600;letter-spacing:.04em;color:#fff;line-height:1.35}
+.ui-spec span{display:block;margin-top:3px;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--dim-2)}
+
+@keyframes uiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+@media(max-width:980px){
+  .ui-grid{grid-template-columns:1fr;gap:clamp(28px,6vw,44px)}
+  .ui-stage{order:-1}
+  .dev{width:min(100%,400px)}
+  .ui-item{grid-template-columns:34px 1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .rv,.rv-l{opacity:1!important;transform:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body data-page-node-id="2sUXloY4MaaFsHdXbuF43p">
+
+<div class="progress" id="progress" data-page-node-id="4yAVNrmxuO4dTQ8VgH6rUz"></div>
+<div class="bg-layer" data-page-node-id="odF5nOwqs7Bl5t4EbAJc6W">
+  <div class="orb orb-1" data-page-node-id="3ullf3z45yYtdEa3vACggn"></div><div class="orb orb-2" data-page-node-id="weNlhNEBS6s5YAgAL6l0UW"></div><div class="orb orb-3" data-page-node-id="V40K1Np2t4uy3IWcWlLPL3"></div>
+</div>
+<div class="grain" data-page-node-id="3ibx5Y6MB9nCvLCgTLVh4K"></div>
+<canvas id="petals" data-page-node-id="RinW3AvHbu4dNo3WMLOtbu"></canvas>
+<div class="edge-text" data-zh="次元星徽 · 二〇二六项目汇报" data-en="DIMENSION STAR · PROJECT REVIEW 2026" data-page-node-id="YtwHueTjk4wC12ytwUdEMs">次元星徽 · 二〇二六项目汇报</div>
+<div class="edge-line" data-page-node-id="bmn6SvBvPwAi8eKkFkVPa9"><span data-page-node-id="kWU2gFzJrUh8Epqi10oL3x"></span><b data-page-node-id="VHKOCtg6YbIOHgINOKc1Mu" data-zh="SCROLL" data-en="SCROLL">SCROLL</b><span data-page-node-id="RESGSDdlkGijfTGtsZlz5B"></span></div>
+
+<header id="hdr" data-page-node-id="llSYPFzqE3Ocy6j2iVFevw">
+  <div class="nav" data-page-node-id="Y3B6MHhvf0RQaICYcYfBz1">
+    <a class="logo" href="#top" data-page-node-id="qG2DF8CoJsiyVpztZ8tEv1">
+      <span class="mark" data-page-node-id="xKtEfHgtWGgx70aT2xxhZF"></span>
+      <span class="txt" data-page-node-id="WC7vBHVvKNF3DfcTfoBvcG" data-zh="次元星徽" data-en="DIMENSION STAR">次元星徽</span>
+    </a>
+    <nav class="menu" id="menu" data-page-node-id="5EdWWu51yDEh8oRd4HPcbw">
+      <a href="#character" data-zh="角色" data-en="CHARACTER" data-page-node-id="kUVIIKagg6V1BGwKwX5Bzj">角色</a>
+      <a href="#ui" data-zh="屏幕界面" data-en="SCREEN UI" data-page-node-id="uIKq0UIScrnM2ZbHpVcLxT">屏幕界面</a>
+      <a href="#voice" data-zh="语音系统" data-en="VOICE" data-page-node-id="sjWapP6XTYWiU9zRnh1zpJ">语音系统</a>
+      <a href="#road" data-zh="开发路线" data-en="ROADMAP" data-page-node-id="xyILtsUka3R449UbHjgrMs">开发路线</a>
+      <a href="#specs" data-zh="硬件规格" data-en="SPECS" data-page-node-id="PVPBk0jh7kZ0TBEHb6LTDg">硬件规格</a>
+    </nav>
+    <div class="nav-right" data-page-node-id="aDmxZbVF1h0vMrhinMOB5B">
+      <button class="lang" id="langBtn" data-page-node-id="M2XFdwnzAyqaLFC0O2qzFW"><span class="dot" data-page-node-id="33MewDmq0gdbXIAdMZs7Kz"></span><b id="langLabel" data-page-node-id="EtAgwYDR4YPktm1rovUVZb" data-zh="EN" data-en="EN">EN</b></button>
+      <a class="cta-sm" href="#voice" data-zh="语音架构" data-en="VOICE ARCH" data-page-node-id="shCXz9smjgDebOICN09LRs">语音架构</a>
+      <button class="burger" id="burger" aria-label="menu" data-page-node-id="p61GXdwMDAH1ndUhYOnC37"><i data-page-node-id="4zYvmODWsKyvXwwH3ZEV0J"></i><i data-page-node-id="z9QuioaZxDZSfzLMXF0ByO"></i><i data-page-node-id="mlG0V815GAJyzIgjB4GdzF"></i></button>
+    </div>
+  </div>
+</header>
+
+<main id="top" data-page-node-id="Gfs5bZ3LfpMpFC1lQha5iH">
+<section class="hero" data-page-node-id="tIskc9LvwF20IdGxXaB5g6">
+  <div class="inner" data-page-node-id="Ejj3Y10dvlHrjO1UOhniyr">
+    <div class="hero-copy" data-page-node-id="kxVIrq4IrPCbCmBL0DLINP">
+      <div class="kicker rv" data-zh="麦谷 · 次元星徽 · 2026" data-en="MY GOO · DIMENSION STAR · 2026" data-page-node-id="hHt3wUCJODaDQbldxuNVyK">麦谷 · 次元星徽 · 2026</div>
+      <h1 class="rv" data-page-node-id="vREG1hEr4ufHkAv9p64YC3">
+        <span class="l1" data-zh="次元星徽" data-en="DIMENSION STAR" data-page-node-id="hkHQOq1vVooOZQk9PZtdCS">次元星徽</span>
+        <span class="en" data-zh="让角色，真正活起来" data-en="MAKE THE CHARACTER ALIVE" data-page-node-id="wSWe9jDPipyFO6P9RddPto">让角色，真正活起来</span>
+      </h1>
+      <p class="hero-tag rv" data-page-node-id="2EtBMQn9Ng5RrnYWRzARCx"><span data-zh="传统徽章只是印着角色的铁皮，而次元星徽要交付的是 —— " data-en="A badge is just printed tin. What we deliver is " data-page-node-id="o4Tw4z1jmAI1RV0NEVCfAl">传统徽章只是印着角色的铁皮，而次元星徽要交付的是 —— </span><b class="hl" data-page-node-id="rdeRTxBhcE1C3epeafJXSs"><span data-zh="角色本人在里面" data-en="the character inside" data-page-node-id="R1z4Jksk2epY64zFYRsLE6">角色本人在里面</span></b><span data-zh="。圆屏、双麦、本地语音推理：她看得见你、听得到你，也会记得你。" data-en=". Round screen, dual mics, local voice inference — she sees you, hears you, and remembers you." data-page-node-id="R4uLtrccP8A2rQ2b8F85I9">。圆屏、双麦、本地语音推理：她看得见你、听得到你，也会记得你。</span></p>
+      <div class="hero-acts rv" data-page-node-id="0gCcj9xiQAUTFL3r6liIM4">
+        <a class="btn btn-main" href="#character" data-page-node-id="HusTvhzBbG977QSA5iSLv4"><span data-zh="认识她" data-en="MEET HER" data-page-node-id="W3iFrEXnaU1kVlrmbJbXZY">认识她</span> <span class="arw" data-page-node-id="2RZKhOTFzhlHocHPJ7F1dL" data-zh="→" data-en="→">→</span></a>
+        <a class="btn btn-ghost" href="#voice" data-zh="语音技术架构" data-en="VOICE ARCHITECTURE" data-page-node-id="C8cSQDcxw2OoaaItKT4IdU">语音技术架构</a>
+      </div>
+      <div class="hero-stats rv" data-page-node-id="UeHKePiKm2Am0GZmPJlV0D">
+        <div data-page-node-id="qFtR04mmZCsJzJQaeNZ77Z"><b data-zh="本地" data-en="LOCAL" data-page-node-id="XsLKCcTB0USeVX2wnmQUsi">本地</b><span data-zh="ASR + TTS 推理" data-en="ASR + TTS" data-page-node-id="sJ9FbofEIOQnEJk3SyHr0w">ASR + TTS 推理</span></div>
+        <div data-page-node-id="8jMKyuTlWhgdBDuFtrb7xz"><b data-zh="1.85″" data-en="1.85″" data-page-node-id="O794EoYuPObskHmTKTrIzQ">1.85″</b><span data-zh="360×360 圆屏" data-en="360×360 ROUND" data-page-node-id="UMlYQZZUXB1nlr6xryUQ7f">360×360 圆屏</span></div>
+        <div data-page-node-id="q4wAptbU1Lj37wvitwqUys"><b data-zh="离线" data-en="OFFLINE" data-page-node-id="bxAt7fI5r1oH7CcRG7g2n7">离线</b><span data-zh="断网可用" data-en="STILL ALIVE" data-page-node-id="w157HanFaaZ2Z7pjeO2kwF">断网可用</span></div>
+      </div>
+    </div>
+
+    <div class="stage" id="stage" data-page-node-id="5NcvwssKqXwJYKfYjAs8Zf">
+      <div class="shaft" data-page-node-id="vEdGRjmy1HKS21gXr41U9Z"></div>
+      <div class="halo" data-page-node-id="rPV7dC3CiNrabqcvCWEdgG"></div>
+      <div class="ring r3" data-page-node-id="tM1Z8sBM0ydN8kk2Tpms3j"></div>
+      <div class="ring" data-page-node-id="8NpQGntqFz3f1DccFmt9A8"></div>
+      <div class="ring r2" data-page-node-id="9AHRXBE2u87ZZwcRPyznCE"></div>
+      <img class="char" id="heroChar" src="assets/mascot.png" alt="角色 爱莉希雅" data-page-node-id="KLrSLRW7D01sM9AA85myIU" />
+      <div class="floor" data-page-node-id="YwlyyqRxvEvz8Fo0VcWKCZ"></div>
+      <div class="float-tag tag-a" data-page-node-id="ziDY1r8LvUQhEap75jAzJF"><span class="d" data-page-node-id="vg6ATMFdCiQY92V0Ml8cMG"></span><span data-zh="语音唤醒 · 待机中" data-en="WAKE WORD · IDLE" data-page-node-id="eOFNeTzUbOAZ7CqDhdvHti">语音唤醒 · 待机中</span></div>
+      <div class="float-tag tag-b" data-page-node-id="r08RzMcQ1cjO2tqOhZWky8"><span class="d" data-page-node-id="9CbHn9HCM2rn6igUg4lRXw"></span><span data-zh="本地推理 · RTX 5070" data-en="LOCAL INFERENCE · RTX 5070" data-page-node-id="nnoMHyLWEhFHbyEoukQOWS">本地推理 · RTX 5070</span></div>
+      <div class="float-tag tag-c" data-page-node-id="z55Jfy1wp0ATjRBIE4MpoQ"><span class="d" data-page-node-id="clqV1Mn1pl0COGDPSJY4xe"></span><span data-zh="心情值 · 良好" data-en="MOOD · GOOD" data-page-node-id="DjEAGhoC0PGOPAIuOM6IUG">心情值 · 良好</span></div>
+      <div class="namecard" data-page-node-id="exoE1sbVjDZn1sLFLklYJU">
+        <b data-zh="爱莉希雅" data-en="ELYSIA" data-page-node-id="Dfe4pFEA9Okk8ABSYzur5z">爱莉希雅</b>
+        <span data-page-node-id="3QY8RCu6MvH8Ai0kHq8XpH" data-zh="CV. LOCAL TTS · 001" data-en="CV. LOCAL TTS · 001">CV. LOCAL TTS · 001</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint" data-page-node-id="nJsLq1ZiNJDwiaEotut5wM"><span data-page-node-id="iWzvbEcjRYaqGwWLcPmkrr" data-zh="SCROLL" data-en="SCROLL">SCROLL</span><i data-page-node-id="YEKokuUa4b5zksN8pWRax9"></i></div>
+</section>
+
+<section class="sec character" id="character" data-page-node-id="aCngCRAP3qXTPWeIHTKGZc">
+  <div class="wrap" data-page-node-id="ZibEgJtynVMAierVy08rL5">
+    <div class="sec-head rv" data-page-node-id="DJG1VBEOmeAWIWOzzEq9eL">
+      <div class="left" data-page-node-id="oG4CT1O5cUsdMgx9yLEThH">
+        <div class="num" data-page-node-id="2EIhOc4TWEzWbVSopGr3v3" data-zh="01" data-en="01">01</div>
+        <span class="en" data-zh="认识角色" data-en="Meet the Character" data-page-node-id="KrBbz7E6K2MyGeRv6eF968">认识角色</span>
+        <h2 data-page-node-id="EzZdWmrPLfuxipRsaEn6Wj"><span data-zh="她不是一张贴纸，" data-en="Not a sticker. " data-page-node-id="fL8G0pbx8PyGIo1hUIlDSe">她不是一张贴纸，</span><em data-zh="她是活的" data-en="She is alive." data-page-node-id="rKmNWxNwAwfKTTspZrlFph">她是活的</em></h2>
+      </div>
+      <p data-zh="每个角色都有一套私有「灵魂档案」：性格、措辞、音色、禁忌，全部写在角色卡里，与固件代码彻底分离。换一张卡，就是换一个灵魂。" data-en="Every character carries a private soul file — personality, wording, timbre, taboos — all inside a character card, decoupled from firmware. Swap the card, swap the soul." data-page-node-id="Gz83aDOmmYyzoGi5rqVJpL">每个角色都有一套私有「灵魂档案」：性格、措辞、音色、禁忌，全部写在角色卡里，与固件代码彻底分离。换一张卡，就是换一个灵魂。</p>
+    </div>
+
+    <div class="char-grid" data-page-node-id="CbTZ0XOy7zzV5YGAX3ShCB">
+      <div class="char-stage rv-l" data-page-node-id="PeeaCuNawnpiMEgo6roo9O">
+        <div class="plate" data-page-node-id="8uwksaS0EEXqQktnNNu6BV"></div>
+        <img src="assets/mascot.png" alt="爱莉希雅 立绘" data-page-node-id="kYI8G4nTFyXf77oWBBIT5D" />
+        <div class="badge-float" data-page-node-id="oVtbcEIH3BlEjWNbizoNha"><b data-page-node-id="VEZT88XTdlaW5VOHc8PlCl" data-zh="ALWAYS<br>WITH YOU" data-en="ALWAYS<br>WITH YOU">ALWAYS<br data-page-node-id="vNF0ZVDa3morzQDF6oMcSB"/>WITH YOU</b></div>
+      </div>
+      <div class="char-info rv" data-page-node-id="fdqBRVUDFfUHBYhq9641fj">
+        <h3 class="char-name" data-page-node-id="0Gqbcto2jeYeU1Shlfaft9"><span data-zh="爱莉希雅" data-en="Elysia" data-page-node-id="3N7VdRo89GCdzgRFdPctUX">爱莉希雅</span><small data-page-node-id="Y3lKGS2MLUXzR2wuA6cG3t" data-zh="VOICE MODEL · COSYVOICE 3.0" data-en="VOICE MODEL · COSYVOICE 3.0">VOICE MODEL · COSYVOICE 3.0</small></h3>
+        <div class="char-quote" data-page-node-id="g3RPFZcV1afdQ3aIO2zWkl">
+          <span data-zh="「你回来啦～今天在外面待了好久哦，我一直在这儿等你。要不要先跟我说说话？」" data-en="&quot;You're back~ you were out so long today. I've been waiting right here. Wanna talk to me first?&quot;" data-page-node-id="Bh8iisKlkANa8xwcxNyXaU">「你回来啦～今天在外面待了好久哦，我一直在这儿等你。要不要先跟我说说话？」</span>
+          <span class="who" data-zh="爱莉希雅 · 角色卡台词示例" data-en="ELYSIA · SAMPLE CHARACTER CARD LINE" data-page-node-id="Xv7ULCmVxsFDbte38zrBGB">爱莉希雅 · 角色卡台词示例</span>
+        </div>
+        <div class="traits" data-page-node-id="aGWAXpZAieUHnartZA2kzi">
+          <span class="trait" data-zh="元气担当" data-en="ENERGETIC" data-page-node-id="wrGnF4BGVVFPucHakTkZNV">元气担当</span>
+          <span class="trait" data-zh="轻微傲娇" data-en="TSUNDERE" data-page-node-id="cUtCKrW9CNCQI3eFntIVfV">轻微傲娇</span>
+          <span class="trait" data-zh="会撒娇" data-en="AFFECTIONATE" data-page-node-id="H6CtP3XpV9BP1xW4Ouo3BN">会撒娇</span>
+          <span class="trait" data-zh="专属称呼" data-en="NICKNAME" data-page-node-id="6NMsYmaDfrRaPutwZryly8">专属称呼</span>
+          <span class="trait" data-zh="不说教" data-en="NO LECTURING" data-page-node-id="EAZDFVfCyH8yTOg6UgmHBd">不说教</span>
+        </div>
+        <div class="bars" id="bars" data-page-node-id="rzVLbM2KpBan1m2u4FuxrJ">
+          <div class="bar-row" data-page-node-id="0T4UAZBHtXuewxyhiv1lWZ"><span class="k" data-zh="亲密度" data-en="BOND" data-page-node-id="iTYitg77iBmf0BRqCy8pAW">亲密度</span><span class="bar" data-page-node-id="VmyHzhcdLAgalOZjjtfuVA"><i data-w="86" data-page-node-id="R9pIMYjBxtJpwVxD0lOxht"></i></span><span class="v" data-page-node-id="5BBTeAmKUImXeI51oR8Z87" data-zh="86" data-en="86">86</span></div>
+          <div class="bar-row" data-page-node-id="kmXNV3zIbdoX5Pl7GZqXXe"><span class="k" data-zh="元气" data-en="VITALITY" data-page-node-id="PhfyZru7fkgl4yvIB45Lnf">元气</span><span class="bar" data-page-node-id="zhXxGviFOGTK9U8GOSlvYb"><i data-w="94" data-page-node-id="Vm878JiGgFBvZLJL2vIEcr"></i></span><span class="v" data-page-node-id="fu4sO94QtBQEaDt8eYcE2u" data-zh="94" data-en="94">94</span></div>
+          <div class="bar-row" data-page-node-id="nqJEKMEoC5bztZZnkbaI5B"><span class="k" data-zh="吐槽力" data-en="SNARK" data-page-node-id="q94MQHlI7YbXHdho7wiCXU">吐槽力</span><span class="bar" data-page-node-id="Sh7DEUhBWZpijEFRL3VXFI"><i data-w="72" data-page-node-id="bQC5pQiGYOObneiTmFCqqt"></i></span><span class="v" data-page-node-id="jdA7BmIrdE1j49rJ0pdUFG" data-zh="72" data-en="72">72</span></div>
+          <div class="bar-row" data-page-node-id="TW6cAecn5mmBJjBoRDedyB"><span class="k" data-zh="粘人度" data-en="CLINGY" data-page-node-id="sFWxmcxwISveZamNuwRJsU">粘人度</span><span class="bar" data-page-node-id="JdBZWrEkw8rgYySkfC96Ct"><i data-w="90" data-page-node-id="QFYnPev9kHLMcp9eKTpLBw"></i></span><span class="v" data-page-node-id="gfWWn5SoDg9TqmV6GKynkS" data-zh="90" data-en="90">90</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec ui" id="ui" data-page-node-id="Ke9yOPkhAcW1PmX7zHNDmY">
+  <div class="wrap" data-page-node-id="95MlTJAKZCLuZmIQGdOfg4">
+    <div class="sec-head rv" data-page-node-id="OeHXRIabDw7KIeB2OUWMhQ">
+      <div class="left" data-page-node-id="oRG6YMgs4KHIBYhsPOK5k7">
+        <div class="num" data-zh="02" data-en="02" data-page-node-id="Uru1hET4b7FkRTwvH06Biz">02</div>
+        <span class="en" data-zh="屏幕界面" data-en="Screen UI" data-page-node-id="foCA5rqartfkqT0jX7qDFG">屏幕界面</span>
+        <h2 data-page-node-id="4FeX9fgMi1ollvYXTlkUCy"><span data-zh="一块圆屏，" data-en="One round screen, " data-page-node-id="cxvRisIUAHsENQBwS5B0JF">一块圆屏，</span><em data-zh="装下一个人" data-en="one person inside" data-page-node-id="CD4cUGdqz4eeKb0X0EUmtv">装下一个人</em></h2>
+      </div>
+      <p data-zh="1.85 英寸、360×360 的圆，是她的脸而不是显示器。所有信息被推让到边缘，中间永远留给她 —— 抬眼即读，抬手即说。" data-en="A 1.85-inch 360×360 circle — her face, not a display. Every element is pushed to the rim so the centre stays hers: read at a glance, speak with one touch." data-page-node-id="LQyhy8O7ySobf4lXT8aKu0">1.85 英寸、360×360 的圆，是她的脸而不是显示器。所有信息被推让到边缘，中间永远留给她 —— 抬眼即读，抬手即说。</p>
+    </div>
+
+    <div class="ui-grid" data-page-node-id="NZwLTPCw06ryGn7S05PvFg">
+      <div class="ui-stage rv-l" data-page-node-id="RBGXtSnm7LSz9HZrxSO4tt">
+        <div class="ui-halo" data-page-node-id="Wgs0jOv1oUQQmgDld8CVOw"></div>
+        <div class="ui-orbit" data-page-node-id="dxDv62USMuF3Bce0aJ4s5W"></div>
+        <div class="dev" data-page-node-id="YkGk0jI91Nu99xWTCjw9sF">
+          <div class="scr" data-page-node-id="TCKnzzUTRSABgTWB6esZ2m">
+            <img class="ui-shot" src="assets/ui-screen.png" width="360" height="360" alt="次元星徽 屏幕界面 · 原始设计稿" data-page-node-id="UiShotOr01AbCdEfGhIj"/>
+          </div>
+        </div>
+        <div class="ui-note" data-zh="原始设计稿 · 360×360 · 未经任何修改" data-en="ORIGINAL SCREEN · 360×360 · UNMODIFIED" data-page-node-id="UiNoteOr01AbCdEfGhIj">原始设计稿 · 360×360 · 未经任何修改</div>
+      </div>
+
+      <div class="ui-side rv" data-page-node-id="jHrxhK65xFbD1ZPZsD8jIl">
+        <div class="ui-item" data-page-node-id="UFEQdIBKiQg5BcknY27KxF">
+          <b data-zh="01" data-en="01" data-page-node-id="p0DUUOM4hFPotesQgKcQIW">01</b>
+          <div data-page-node-id="P2AtgGL5QxxqzjIG8eMSYl">
+            <h4 data-zh="一眼可读" data-en="At a glance" data-page-node-id="dZv0NI8GJXtasiFmKuQEYg">一眼可读</h4>
+            <p data-zh="时间、日期与名字贴着圆屏上弧排布 —— 视线不用离开角色，也能读完最重要的三件事。" data-en="Time, date and name ride the upper arc — the three things you need, without ever leaving her." data-page-node-id="E2cNbsEV9H66CweHtsyegC">时间、日期与名字贴着圆屏上弧排布 —— 视线不用离开角色，也能读完最重要的三件事。</p>
+          </div>
+        </div>
+        <div class="ui-item" data-page-node-id="shkojeUFbowhL4jZPDG4Gz">
+          <b data-zh="02" data-en="02" data-page-node-id="wBbzyk3yBQDUesqZjbpwCv">02</b>
+          <div data-page-node-id="lRfpTZkwXUZsNei7nDw9tB">
+            <h4 data-zh="玻璃卡片" data-en="Glass cards" data-page-node-id="rxqCuWtNcPFgAWc6AQHJFQ">玻璃卡片</h4>
+            <p data-zh="天气与陪伴状态做成半透明玻璃卡，浮在两侧留白里：信息在场，但不抢她的位置。" data-en="Weather and companionship live in frosted cards on both sides: present, never in the way." data-page-node-id="iBasKJQ7OSFWVu5kYpgNWB">天气与陪伴状态做成半透明玻璃卡，浮在两侧留白里：信息在场，但不抢她的位置。</p>
+          </div>
+        </div>
+        <div class="ui-item" data-page-node-id="aCm0RIOHbmWxZ01dSjS7BJ">
+          <b data-zh="03" data-en="03" data-page-node-id="Iq4Wyaj8XWx8PqIJgHTy4B">03</b>
+          <div data-page-node-id="SJt9omoZw0m1OWTLGfkApC">
+            <h4 data-zh="单一强交互" data-en="One tap" data-page-node-id="aJlLnFyYqG4swfH7TDIGEX">单一强交互</h4>
+            <p data-zh="右下角绿色 MIC 是全屏唯一的强交互点：长按说话、松手即答，没有二级菜单要翻。" data-en="The green MIC is the only strong affordance on screen: hold to speak, release to answer — no nested menus." data-page-node-id="Y8kMwD0BAiuhVcn8GEHYbp">右下角绿色 MIC 是全屏唯一的强交互点：长按说话、松手即答，没有二级菜单要翻。</p>
+          </div>
+        </div>
+        <div class="ui-item" data-page-node-id="jhwOahvWXAZ6fYdeIo4v68">
+          <b data-zh="04" data-en="04" data-page-node-id="l0czjRxTecJrixfU9RxUBr">04</b>
+          <div data-page-node-id="WM0Hree4HMxbK7ckQqmiO3">
+            <h4 data-zh="情绪底色" data-en="Mood palette" data-page-node-id="oHurdgBoo0XTTTxTB3S8oW">情绪底色</h4>
+            <p data-zh="背景的粉与紫随心情值缓慢流动，亮度跟着日夜变化 —— 这是她此刻的状态，不是一张壁纸。" data-en="Pink and violet drift with her mood, brightness follows the hour — a state, not a wallpaper." data-page-node-id="ZuvLzeruUfpmAtdZoXmAEM">背景的粉与紫随心情值缓慢流动，亮度跟着日夜变化 —— 这是她此刻的状态，不是一张壁纸。</p>
+          </div>
+        </div>
+        <div class="ui-spec" data-page-node-id="UiSpec360Px01AbCdEfGhI">
+          <div data-page-node-id="UiSpecA1KlMnOpQrStUvWx"><b data-zh="1.85″" data-en="1.85″" data-page-node-id="UiSpecB1AbCdEfGhIjKlM">1.85″</b><span data-zh="圆屏尺寸" data-en="SCREEN" data-page-node-id="UiSpecC1MnOpQrStUvWxY">圆屏尺寸</span></div>
+          <div data-page-node-id="UiSpecA2KlMnOpQrStUvWx"><b data-zh="360×360" data-en="360×360" data-page-node-id="UiSpecB2AbCdEfGhIjKlM">360×360</b><span data-zh="分辨率" data-en="RESOLUTION" data-page-node-id="UiSpecC2MnOpQrStUvWxY">分辨率</span></div>
+          <div data-page-node-id="UiSpecA3KlMnOpQrStUvWx"><b data-zh="60fps" data-en="60fps" data-page-node-id="UiSpecB3AbCdEfGhIjKlM">60fps</b><span data-zh="动效帧率" data-en="MOTION" data-page-node-id="UiSpecC3MnOpQrStUvWxY">动效帧率</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec voice" id="voice" data-page-node-id="FhHHIATZ5HNIPAk3aykjyr">
+  <div class="wrap" data-page-node-id="z2QCTmqcKwZD07LPAazPaD">
+    <div class="sec-head rv" data-page-node-id="CeCUMtu61kVhVzgg0oHx4V">
+      <div class="left" data-page-node-id="q7lSPC3lFVt1ne6Jf9FoHT">
+        <div class="num" data-page-node-id="hk9HfOjF8VKp6i8sQ48ClE" data-zh="03" data-en="03">03</div>
+        <span class="en" data-zh="语音交互系统" data-en="Voice Interaction System" data-page-node-id="18DgIZ7p0JtEuaBIuZOyPz">语音交互系统</span>
+        <h2 data-page-node-id="NTjo1qdqkIYy7KV0xO7oND"><span data-zh="让角色" data-en="Let her " data-page-node-id="0vBvrCdmpXAp0LqxnQE9tV">让角色</span><em data-zh="真正开口说话" data-en="actually speak" data-page-node-id="UthLNebq5umCnMSDSaNzCL">真正开口说话</em></h2>
+      </div>
+      <p data-zh="语音子系统以 VOICE_INTERACTION.md 为唯一权威规格：本地 ASR + 云端 LLM + 本地 TTS。开发板只负责采集、播放与显示，重推理全部落在本地电脑。" data-en="The voice subsystem follows VOICE_INTERACTION.md as the single source of truth: local ASR + cloud LLM + local TTS. The board only captures, plays and displays; heavy inference stays on the local PC." data-page-node-id="fQmV27d5tplFT0anhC7hhu">语音子系统以 VOICE_INTERACTION.md 为唯一权威规格：本地 ASR + 云端 LLM + 本地 TTS。开发板只负责采集、播放与显示，重推理全部落在本地电脑。</p>
+    </div>
+
+    <div class="flow rv" data-page-node-id="LVzdeb3N9iAY8cPoWtAF6u">
+      <div class="fnode" data-page-node-id="xRzODfrngQI60DzgiVPLwP"><div class="dot" data-page-node-id="B2LWHAZVswD0cFXinjOHEN"></div><div class="ic" data-page-node-id="GombVsBMMXlQ1IOV2xzAuT" data-zh="🎙" data-en="🎙">🎙</div><h4 data-zh="麦克风阵列" data-en="Mic Array" data-page-node-id="DkEQgaGfCEJfC0ABTQeGox">麦克风阵列</h4><div class="sm" data-page-node-id="dQqzOw436aFlGtAhguSiMt" data-zh="CAPTURE / 16kHz" data-en="CAPTURE / 16kHz">CAPTURE / 16kHz</div><p data-zh="开发板双麦采集，按键或唤醒词起始" data-en="Dual-mic capture, button or wake word" data-page-node-id="Elwy0wpbpZtoMdHpgpzOWC">开发板双麦采集，按键或唤醒词起始</p></div>
+      <div class="fnode" data-page-node-id="3ANvA55vYz1lFeBeXID5vE"><div class="dot" data-page-node-id="D0yy9LO5GsS4d4H5olmeSo"></div><div class="ic" data-page-node-id="1aBKTHQpWvR8i0em3z3Vje" data-zh="🧠" data-en="🧠">🧠</div><h4 data-zh="本地 ASR" data-en="Local ASR" data-page-node-id="VouoEo4Xqb4IWbPpsM28vY">本地 ASR</h4><div class="sm" data-page-node-id="8mdYMuJXHriemFnNtoC9aC" data-zh="FUNASR · PARAFORMER" data-en="FUNASR · PARAFORMER">FUNASR · PARAFORMER</div><p data-zh="中文语音转写，离线可用，不调云端" data-en="Chinese transcription, offline, no cloud ASR" data-page-node-id="GKtFKB2R5KHP9tIzDF04nW">中文语音转写，离线可用，不调云端</p></div>
+      <div class="fnode" data-page-node-id="gfw0PFmUsM6m9kZKVxVMnM"><div class="dot" data-page-node-id="gk9YMrlWBNv7dLD203jyAt"></div><div class="ic" data-page-node-id="VOPV01qxMbYJ7ewSW4cYW3" data-zh="💬" data-en="💬">💬</div><h4 data-zh="云端 LLM" data-en="Cloud LLM" data-page-node-id="PMD5Rormg9vTEl3F1C1JiH">云端 LLM</h4><div class="sm" data-page-node-id="DQpaoLhW2m6aKQR863IpjO" data-zh="CHARACTER CARD" data-en="CHARACTER CARD">CHARACTER CARD</div><p data-zh="角色卡与对话历史共同约束生成" data-en="Card plus history shape the reply" data-page-node-id="bb5M2KDnCihnSsCocNyLtF">角色卡与对话历史共同约束生成</p></div>
+      <div class="fnode" data-page-node-id="CjvTy5PdlcbLZMGfkRV2nW"><div class="dot" data-page-node-id="RV6inqYF6p6wpx77ReTxsv"></div><div class="ic" data-page-node-id="14ZlUPft9NzVT7dgQnQQns" data-zh="🔊" data-en="🔊">🔊</div><h4 data-zh="本地 TTS" data-en="Local TTS" data-page-node-id="el6UPj20TC8lag8ACerSFr">本地 TTS</h4><div class="sm" data-page-node-id="yEpc2QdSHI9wlZlUryjDVO" data-zh="COSYVOICE 3.0" data-en="COSYVOICE 3.0">COSYVOICE 3.0</div><p data-zh="音色克隆合成，HTTP 回环调用" data-en="Voice-cloned synthesis over loopback" data-page-node-id="jrKiziCrgikAWAc8gGu0Hs">音色克隆合成，HTTP 回环调用</p></div>
+      <div class="fnode" data-page-node-id="t3PY6Ig5ZJJZ3NBR4R6Hms"><div class="dot" data-page-node-id="lmg360FFNqKTIlJCVSTOgh"></div><div class="ic" data-page-node-id="jHxIHjFzAShnecM5JKmwKA" data-zh="📣" data-en="📣">📣</div><h4 data-zh="扬声器回放" data-en="Playback" data-page-node-id="T39VS4zKsHe7TFFPjKj2SA">扬声器回放</h4><div class="sm" data-page-node-id="krW2hGSXRf9SKDndyp2s2I" data-zh="ES8311 / 24kHz" data-en="ES8311 / 24kHz">ES8311 / 24kHz</div><p data-zh="开发板播放，联动口型与表情动画" data-en="Board playback synced with lip and face" data-page-node-id="3PGfidj5razH0EJg0zPLgh">开发板播放，联动口型与表情动画</p></div>
+    </div>
+    <div class="flow-cap" data-page-node-id="9NuLLrrsTZnCCjEyFU5trk" data-zh="全链路延迟目标 ≤ 2.5s" data-en="END-TO-END LATENCY TARGET · ≤ 2.5s">全链路延迟目标 ≤ 2.5s</div>
+
+    <div class="voice-body" style="margin-top:56px" data-page-node-id="52S4sFij5ZFzMNTWy2xgKA">
+      <div class="panel rv" data-page-node-id="Jvu0woL5uoEAPzJOAZaFli">
+        <div class="panel-head" data-page-node-id="dieDGK9KpLzsCVKB3n1THd">
+          <b data-page-node-id="4rKvSErarswHLHG4gHvGNM" data-zh="WEBSOCKET SESSION" data-en="WEBSOCKET SESSION">WEBSOCKET SESSION</b>
+          <div class="st" data-page-node-id="EkFEH5T2HuK4699kHebMeZ"><i data-page-node-id="ghP5v8zZTZW46GWG23yyy4"></i><span data-page-node-id="3E9fqvoKZPCmhPRpqRuxoG" data-zh="ACTIVE · TURN 03" data-en="ACTIVE · TURN 03">ACTIVE · TURN 03</span></div>
+        </div>
+        <div class="talk" data-page-node-id="dwNQcgDlKDaBDeYHGubtXn">
+          <div class="msg row-end" data-page-node-id="hOrHMvhvqRhSFyB7OKEG2S"><div class="av user" data-page-node-id="Sjo1iXxNCHDrPajJ6ZgAGr" data-zh="你" data-en="You">你</div><div class="bub me" data-zh="早上好，爱莉！" data-en="Good morning, Elysia!" data-page-node-id="NszsesIYb2M1Yi0IqYSwrz">早上好，爱莉！</div></div>
+          <div class="meta" data-page-node-id="JsXzfAkN3DDOhVwyQJ6J6s" data-zh="ASR · FunASR paraformer-zh" data-en="ASR · FunASR paraformer-zh">ASR · FunASR paraformer-zh</div>
+          <div class="msg" data-page-node-id="JdmqqukKzRZmzaXL1f9Fob"><div class="av" data-page-node-id="GctHMcoLkFD4WiGKrWn1ub"></div><div class="bub" data-zh="早上好，舰长。新的一天，从一场美妙的邂逅开始吧♪" data-en="Good morning, Captain. Let this new day begin with a wonderful encounter♪" data-page-node-id="4Nwa67EYGNavp8lKys3t31">早上好，舰长。新的一天，从一场美妙的邂逅开始吧♪</div></div>
+          <div class="meta" data-page-node-id="nMdHEFblTCVVx5xo19bJeb" data-zh="LLM · card: elysia.v1" data-en="LLM · card: elysia.v1">LLM · card: elysia.v1</div>
+          <div class="msg" data-page-node-id="sWna4ADe0ziCklMOXKktNR"><div class="av" data-page-node-id="osHTlE4PqPEcgZ6CMCK0kR"></div><div class="bub" style="border-color:rgba(99,230,234,.3);background:rgba(99,230,234,.1)" data-zh="♪ 语音合成完成，正在推流到次元星徽…" data-en="♪ Synthesis done, streaming to the badge..." data-page-node-id="ee1BaDHOcXq8U1wFbmIFCt">♪ 语音合成完成，正在推流到次元星徽…</div></div>
+          <div class="meta" data-page-node-id="VarM9wUYW9KMw9k1LaPo42" data-zh="TTS · CosyVoice 3.0 · 24kHz PCM" data-en="TTS · CosyVoice 3.0 · 24kHz PCM">TTS · CosyVoice 3.0 · 24kHz PCM</div>
+        </div>
+        <div class="lat" data-page-node-id="w6xBRM4Y9DI58xEd4iVorJ">
+          <div data-page-node-id="wrZxWZSyjEa4Oj8yjaQvBT"><b data-page-node-id="fgWa50MhrvBDnyblyX2CYo" data-zh="0.18s" data-en="0.18s">0.18s</b><span data-page-node-id="LLzSEENcqF7dFG8yryaqZm" data-zh="ASR" data-en="ASR">ASR</span></div>
+          <div data-page-node-id="gf6ZrM0kUQu5ByEhHgGdp6"><b data-page-node-id="PsWRY0W0iXuHUJB2Iysfpb" data-zh="0.62s" data-en="0.62s">0.62s</b><span data-zh="LLM 首字" data-en="LLM TTFT" data-page-node-id="KvFPADt4C7FI70oX9Ssolv">LLM 首字</span></div>
+          <div data-page-node-id="JFEJw7SilEr3ByD8fCyaD9"><b data-page-node-id="jMrQZXpcIVJuAApMJkoRCt" data-zh="0.91s" data-en="0.91s">0.91s</b><span data-page-node-id="KN1TSRghy2LboJgy3JCA1X" data-zh="TTS" data-en="TTS">TTS</span></div>
+          <div data-page-node-id="leANNHhKY2EKyByfEvPIP4"><b data-page-node-id="RxIEogzFXqFCniLte6rROG" data-zh="1.71s" data-en="1.71s">1.71s</b><span data-page-node-id="86TrgPFMJRsmStGWQ3pBQZ" data-zh="TOTAL" data-en="TOTAL">TOTAL</span></div>
+        </div>
+      </div>
+
+      <div class="caps" data-page-node-id="j8qBkSSqaTPF00pUZyFQjX">
+        <div class="cap" data-page-node-id="fAkTjW6V9zy58nJSQmpO2e"><div class="n" data-page-node-id="1fH2pisLEDNrWX0InjQFtv" data-zh="01 / ASR" data-en="01 / ASR">01 / ASR</div><h4 data-zh="本地语音识别" data-en="Local ASR" data-page-node-id="RskMEIoou8Dekte7BlNaTh">本地语音识别</h4><p data-zh="FunASR Paraformer 中文识别，跑在本地 RTX 5070 的独立虚拟环境里，全程不经过云端 ASR。" data-en="FunASR Paraformer runs in its own venv on the local RTX 5070 — no cloud ASR at all." data-page-node-id="yHyu1rTdjciVdzj5spXPR5">FunASR Paraformer 中文识别，跑在本地 RTX 5070 的独立虚拟环境里，全程不经过云端 ASR。</p></div>
+        <div class="cap" data-page-node-id="YkURCKSN2CTGsS34XJXqHB"><div class="n" data-page-node-id="aNDQcfkrDKyI7fnGf6QRut" data-zh="02 / LLM" data-en="02 / LLM">02 / LLM</div><h4 data-zh="云端大模型" data-en="Cloud LLM" data-page-node-id="UH7q38FSMMTiT5Ev2ecTpv">云端大模型</h4><p data-zh="统一客户端封装，角色卡与历史上下文注入；密钥不进固件、不进日志。" data-en="Unified client; character card and history injected; keys never touch firmware or logs." data-page-node-id="vuKkdFiMe8os9MxNqJsNcD">统一客户端封装，角色卡与历史上下文注入；密钥不进固件、不进日志。</p></div>
+        <div class="cap" data-page-node-id="UuXB711A4YyAgg4i1hUGYg"><div class="n" data-page-node-id="PktAbkT0em90ad8mB2FFVd" data-zh="03 / TTS" data-en="03 / TTS">03 / TTS</div><h4 data-zh="本地语音合成" data-en="Local TTS" data-page-node-id="oYBHz2QBtAzOfmA1VEqcbj">本地语音合成</h4><p data-zh="CosyVoice 3.0 为主、GPT-SoVITS 备选；HTTP 仅监听回环地址，绝不静默回退云端。" data-en="CosyVoice 3.0 primary, GPT-SoVITS fallback; loopback-only HTTP, never silently falls back." data-page-node-id="kaKZCv3jVk6pxrIabSD8om">CosyVoice 3.0 为主、GPT-SoVITS 备选；HTTP 仅监听回环地址，绝不静默回退云端。</p></div>
+        <div class="cap" data-page-node-id="gnTXCmw4uc91Svs3cYSoUJ"><div class="n" data-page-node-id="rVhB3am64tqnjcMM9ZlnZ3" data-zh="04 / PROTOCOL" data-en="04 / PROTOCOL">04 / PROTOCOL</div><h4 data-zh="半双工通信" data-en="Half-duplex Link" data-page-node-id="2w6DGBUJTRgZ4pluUz2mtO">半双工通信</h4><p data-zh="WebSocket 双向 17 种消息类型，按 session / turn 严格区分轮次，支持打断与重连。" data-en="WebSocket with 17 message types; strict session/turn separation; interrupt and reconnect." data-page-node-id="kHXX4FrrhwrPvfk6OFx5Od">WebSocket 双向 17 种消息类型，按 session / turn 严格区分轮次，支持打断与重连。</p></div>
+        <div class="cap" data-page-node-id="0KnBBopytHfady0TJCTlHr"><div class="n" data-page-node-id="sYsq3l9BbsCbHQTGaLiMDh" data-zh="05 / CARD" data-en="05 / CARD">05 / CARD</div><h4 data-zh="角色卡系统" data-en="Character Cards" data-page-node-id="AtsUctYxjbYHChbU8HeqlL">角色卡系统</h4><p data-zh="YAML / JSON 描述 30+ 字段：性格、语气、口癖、音色、禁止行为，改卡即改人设。" data-en="YAML/JSON with 30+ fields: personality, tone, verbal tics, timbre, forbids." data-page-node-id="sjnrVSsJNLEoow6aq4MORA">YAML / JSON 描述 30+ 字段：性格、语气、口癖、音色、禁止行为，改卡即改人设。</p></div>
+        <div class="cap" data-page-node-id="JUYGYWdv5CWdC1dPCE7Nif"><div class="n" data-page-node-id="HLj9TBB513r6lLrDbyt4Eh" data-zh="06 / SAFETY" data-en="06 / SAFETY">06 / SAFETY</div><h4 data-zh="隐私与安全" data-en="Privacy First" data-page-node-id="AEA5s8oqaViLMndfcmvlyW">隐私与安全</h4><p data-zh="音频不落盘、不留存；本地服务不暴露公网；异常时明确降级而非静默失败。" data-en="Audio never persisted; local services never exposed; failures degrade loudly, not silently." data-page-node-id="yh8KGlVIx2GV4muwHbzYne">音频不落盘、不留存；本地服务不暴露公网；异常时明确降级而非静默失败。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec road" id="road" data-page-node-id="l5sR7ngLqxlgAHNsawSwVJ">
+  <div class="wrap" data-page-node-id="M1PeUVGo00Pd46UZwdGnvK">
+    <div class="sec-head rv" data-page-node-id="o0aQUz1irI31rFhEmHfeCW">
+      <div class="left" data-page-node-id="04e0IBk5fVwp9k1OmiPqBR">
+        <div class="num" data-page-node-id="HxOXGp9WKorRxYedNIpzXu" data-zh="04" data-en="04">04</div>
+        <span class="en" data-zh="开发路线" data-en="Development Roadmap" data-page-node-id="l1PCOHsD7KKwoFAPrAcC1o">开发路线</span>
+        <h2 data-page-node-id="nqrV49hKzrWBN8ruGyRH8d"><span data-zh="七个阶段，" data-en="Seven stages, " data-page-node-id="vX30k7xhzRUi49heQAszlQ">七个阶段，</span><em data-zh="把闭环走通" data-en="one closed loop" data-page-node-id="zEKsaF73DBEPLKIlydHnAh">把闭环走通</em></h2>
+      </div>
+      <p data-zh="严格分阶段推进：每个阶段先验收再进入下一阶段，绝不一次性生成大量未验证代码。这是项目能真正跑起来的前提。" data-en="Strictly phased: validate each stage before the next, never dump large unverified code. That is how the project actually ships." data-page-node-id="RyxdaMjMyStV3DxMzKUOyS">严格分阶段推进：每个阶段先验收再进入下一阶段，绝不一次性生成大量未验证代码。这是项目能真正跑起来的前提。</p>
+    </div>
+    <div class="phases rv" data-page-node-id="lnkLFHbyFV3eNmicviDp0P">
+      <div class="phase" data-page-node-id="XocQPrOKlNTCUbydMHdYiw"><div class="pn" data-page-node-id="wAfJzpEL2xSE4rGThWwv2l" data-zh="PHASE 01" data-en="PHASE 01">PHASE 01</div><div data-page-node-id="rtCNhWC3BOTNGYgM2wl6JF"><h3 data-zh="本地 ASR 验证" data-en="Local ASR Validation" data-page-node-id="dJshkthUfMfrYk4Sok8Awm">本地 ASR 验证</h3><p data-zh="环境检查 → 独立虚拟环境 → FunASR Paraformer 跑通中文识别，建立性能基线。" data-en="Env check → dedicated venv → FunASR Paraformer Chinese recognition; establish a baseline." data-page-node-id="QkfNvVaDtf5bg17qMbIcAQ">环境检查 → 独立虚拟环境 → FunASR Paraformer 跑通中文识别，建立性能基线。</p></div><div class="tag" data-page-node-id="iPMpWHVf8bE4VYoM1drG1i" data-zh="ASR" data-en="ASR">ASR</div></div>
+      <div class="phase" data-page-node-id="quu7SsUzmhPS24OWxR4ViZ"><div class="pn" data-page-node-id="rhFEgNMVozaIndKKoOvh0a" data-zh="PHASE 02" data-en="PHASE 02">PHASE 02</div><div data-page-node-id="y9GFQzPVQ1ut2NowL7as4k"><h3 data-zh="云端 LLM 接入" data-en="Cloud LLM Integration" data-page-node-id="9Jd2zmF90maPnLV43Eye4v">云端 LLM 接入</h3><p data-zh="统一 LLM 客户端封装，验证角色卡遵循度、首 token 延迟与限流处理。" data-en="Unified LLM client; validate character adherence, first-token latency, rate limits." data-page-node-id="rBIIcoFcNAdFokYnjsfxva">统一 LLM 客户端封装，验证角色卡遵循度、首 token 延迟与限流处理。</p></div><div class="tag" data-page-node-id="rdidRTkE1AhE3nlIbZhyYY" data-zh="LLM" data-en="LLM">LLM</div></div>
+      <div class="phase" data-page-node-id="SU0otgLNKVasbtZZLJ6sn4"><div class="pn" data-page-node-id="vrzT8EmDFhLHwZtYGpkpZV" data-zh="PHASE 03" data-en="PHASE 03">PHASE 03</div><div data-page-node-id="DjxVvDPPDbBuQHnVrUREAH"><h3 data-zh="本地 TTS + 对话服务" data-en="Local TTS + Chat Service" data-page-node-id="36ZzGt7Dk4JUJNQsrKG1kp">本地 TTS + 对话服务</h3><p data-zh="评估 CosyVoice 3.0，搭建本地 TTS HTTP 接口，接通 ASR + LLM + TTS 最简闭环。" data-en="Evaluate CosyVoice 3.0, build the local TTS HTTP API, wire the minimal ASR+LLM+TTS loop." data-page-node-id="QdcXgv2zQ519TPgCvtLsmw">评估 CosyVoice 3.0，搭建本地 TTS HTTP 接口，接通 ASR + LLM + TTS 最简闭环。</p></div><div class="tag" data-page-node-id="EtKUXAl34S08aGco8srphb" data-zh="TTS" data-en="TTS">TTS</div></div>
+      <div class="phase" data-page-node-id="KS6zUDIcpUxJCIXSQYZDoK"><div class="pn" data-page-node-id="F38drosJex9HgfRps2JGp2" data-zh="PHASE 04" data-en="PHASE 04">PHASE 04</div><div data-page-node-id="f9ZAaZeBnZzA0L5XUQ7MdB"><h3 data-zh="WebSocket 通信" data-en="WebSocket Transport" data-page-node-id="sFVOKsicS5YWUOD01bRJq0">WebSocket 通信</h3><p data-zh="定义统一消息协议，完成客户端模拟器，测试上传、下发、打断与断线重连。" data-en="Define the protocol, build a client simulator; test upload, dispatch, interrupt, reconnect." data-page-node-id="8SQkCucmwoFpwC3JhEAF2J">定义统一消息协议，完成客户端模拟器，测试上传、下发、打断与断线重连。</p></div><div class="tag" data-page-node-id="5EmtMYVbMNSt0WyX3ipS5n" data-zh="PROTOCOL" data-en="PROTOCOL">PROTOCOL</div></div>
+      <div class="phase" data-page-node-id="4XGyONG2N8LFfxkbV8oQHC"><div class="pn" data-page-node-id="bJuenkKTBFM3A17wQjC6rF" data-zh="PHASE 05" data-en="PHASE 05">PHASE 05</div><div data-page-node-id="eATjt041HvKMt76KJyqfft"><h3 data-zh="ESP32-S3 固件" data-en="ESP32-S3 Firmware" data-page-node-id="keVYOAAya0u5JtzXEIWdfR">ESP32-S3 固件</h3><p data-zh="Wi-Fi 连接、麦克风采集、按键交互、音频播放、WebSocket 与 LCD 状态显示。" data-en="Wi-Fi, mic capture, buttons, audio playback, WebSocket, LCD status." data-page-node-id="SkcsFzdSkYHiWbhsMs24xL">Wi-Fi 连接、麦克风采集、按键交互、音频播放、WebSocket 与 LCD 状态显示。</p></div><div class="tag" data-page-node-id="zFA40QggDaX3jGPsdM0tPv" data-zh="FIRMWARE" data-en="FIRMWARE">FIRMWARE</div></div>
+      <div class="phase" data-page-node-id="INAQpZXhDTrXBStegayXlL"><div class="pn" data-page-node-id="pxZgTIqnSWKCthI6eNB8AL" data-zh="PHASE 06" data-en="PHASE 06">PHASE 06</div><div data-page-node-id="WqTiZXsEBGpuJUQAuNuCiR"><h3 data-zh="整机联调" data-en="System Integration" data-page-node-id="0YCny1yRkTWkjNGarctf3T">整机联调</h3><p data-zh="从录音到播放完整跑通，测多轮对话、网络中断与服务异常，记录全链路延迟。" data-en="End-to-end record → playback; multi-turn, network loss, service faults; full latency logs." data-page-node-id="BIvF0KD7KZg3JJyVyg7wlJ">从录音到播放完整跑通，测多轮对话、网络中断与服务异常，记录全链路延迟。</p></div><div class="tag" data-page-node-id="GCHgtJE8JG8k0AquwfSjID" data-zh="INTEGRATION" data-en="INTEGRATION">INTEGRATION</div></div>
+      <div class="phase" data-page-node-id="B0HtF8Ijh2Eo78Spl2GPvf"><div class="pn" data-page-node-id="9OrDPDPeDDkFaMX7fBTuUC" data-zh="PHASE 07" data-en="PHASE 07">PHASE 07</div><div data-page-node-id="QQ5bvQ3oPBIxBQFfPMQs0n"><h3 data-zh="稳定性与性能优化" data-en="Stability &amp; Optimization" data-page-node-id="03PM7VxadqBZODRf9YEQHC">稳定性与性能优化</h3><p data-zh="依真实数据调参，评估流式 ASR / LLM / TTS，检查显存占用与长时间稳定性。" data-en="Tune on real data; evaluate streaming ASR/LLM/TTS; check VRAM and long-run stability." data-page-node-id="DBCq8amjZGBEBMCrREpBqq">依真实数据调参，评估流式 ASR / LLM / TTS，检查显存占用与长时间稳定性。</p></div><div class="tag" data-page-node-id="M9ZAh17RQqpxm2bPLDdkHg" data-zh="TUNING" data-en="TUNING">TUNING</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="specs" data-page-node-id="e0s2JH0oOR1GqPaWiCBWGC">
+  <div class="wrap" data-page-node-id="JMpCvTeMKwSQ70dbCRN5kl">
+    <div class="sec-head rv" data-page-node-id="XMxulemKaBBQ5pHQTgrRyn">
+      <div class="left" data-page-node-id="w296BzQQ2EvWAUZKLAI2y2">
+        <div class="num" data-page-node-id="JOAbQQixo36kKdJ1wCEccO" data-zh="05" data-en="05">05</div>
+        <span class="en" data-zh="硬件规格" data-en="Hardware &amp; Specifications" data-page-node-id="bxRIXjQrlSd0eB2v7BI7mJ">硬件规格</span>
+        <h2 data-page-node-id="6LzCZP5cyA1IPp5LBsxEHD"><span data-zh="硬件的" data-en="The hardware, " data-page-node-id="qKdJD5j13VA3TMMIlHtyv7">硬件的</span><em data-zh="全部答案" data-en="answered" data-page-node-id="kRUCkRVqMNJFmzdyOgBLOp">全部答案</em></h2>
+      </div>
+      <p data-zh="主控、屏幕、音频链路、联网能力——一块别在胸口的终端。所有参数以 HARDWARE.md 为准。" data-en="SoC, screen, audio chain, connectivity — a terminal pinned to your chest. Specs follow HARDWARE.md." data-page-node-id="2bvb5CwgPif0NQzBZglBQK">主控、屏幕、音频链路、联网能力——一块别在胸口的终端。所有参数以 HARDWARE.md 为准。</p>
+    </div>
+
+    <div class="specs-grid rv" data-page-node-id="WhvXfHBDMd1PVqwgWt69LU">
+      <div class="spec" data-page-node-id="VVj2qGTnphO51HoIEAFrHo"><div class="k" data-page-node-id="ftvwya0QoDALR2rlEWQzNV" data-zh="SOC" data-en="SOC">SOC</div><div class="v" data-page-node-id="wwuat77pdOHQnvwAhnZoaP" data-zh="ESP32-S3R8" data-en="ESP32-S3R8">ESP32-S3R8</div><div class="d" data-zh="双核 Xtensa LX7 · 240MHz · 8MB PSRAM" data-en="Dual Xtensa LX7 · 240MHz · 8MB PSRAM" data-page-node-id="lQV7tyZoCsopYAlcBAZdvG">双核 Xtensa LX7 · 240MHz · 8MB PSRAM</div></div>
+      <div class="spec" data-page-node-id="L6py7DMWtE3Eg5R4DBYM3i"><div class="k" data-page-node-id="9R8R1rg3bPDGJY9FBeKAMp" data-zh="DISPLAY" data-en="DISPLAY">DISPLAY</div><div class="v" data-page-node-id="tEmM3YCNkHwG15Q0VYDtBW" data-zh="1.85″ / 360×360" data-en="1.85″ / 360×360">1.85″ / 360×360</div><div class="d" data-zh="QSPI 圆形电容触摸屏" data-en="QSPI round capacitive touch" data-page-node-id="NGWvgbOZiWfyyKqTFT0mUD">QSPI 圆形电容触摸屏</div></div>
+      <div class="spec" data-page-node-id="mt3Y6WPq3bYiTXMmpVSspX"><div class="k" data-page-node-id="9mMKZEW93EyqE1J1dVEEAE" data-zh="AUDIO" data-en="AUDIO">AUDIO</div><div class="v" data-page-node-id="YNJhXCn75Osshq2XRAAHWc" data-zh="DUAL MIC + ES8311" data-en="DUAL MIC + ES8311">DUAL MIC + ES8311</div><div class="d" data-zh="16kHz 采集 / 24kHz 回放" data-en="16kHz capture / 24kHz playback" data-page-node-id="J8jQR5T9Mg8C4rGTvVp2oG">16kHz 采集 / 24kHz 回放</div></div>
+      <div class="spec" data-page-node-id="FmZ2s96lWe4JUBh48LebKi"><div class="k" data-page-node-id="pcpXu0HkArJSvCqbsgBiq0" data-zh="WIRELESS" data-en="WIRELESS">WIRELESS</div><div class="v" data-page-node-id="UGZsEIT6BvhGFJjDelgdJk" data-zh="WiFi + BLE 5" data-en="WiFi + BLE 5">WiFi + BLE 5</div><div class="d" data-zh="OTA 升级 · BLE 配网 · 云端 AI" data-en="OTA · BLE pairing · Cloud AI" data-page-node-id="h8nAF5HZwZ30bXqNUuIA6P">OTA 升级 · BLE 配网 · 云端 AI</div></div>
+    </div>
+
+    <div class="prod-gallery rv" data-page-node-id="qduAgjnRgU8FnKT2ueiQOH">
+      <figure class="prod-card" data-page-node-id="1l0MBzGxjtrS1ZpcQMw3Jx">
+        <div class="ph" data-page-node-id="HgLkKiBUKq7OMAHh0wawzW"><img src="assets/product-side-clean.png" alt="次元星徽 侧面外观（已抠图 · 已去除玻璃反光）" loading="lazy" data-page-node-id="ZGRNz3vTBaWcbs1NHprtCZ" /></div>
+        <div class="tag" data-page-node-id="uOfD22vH3qPkshjyHRiIuF" data-zh="SIDE · 侧边按键" data-en="SIDE · SIDE KEY">SIDE · 侧边按键</div>
+        <figcaption class="cap" data-page-node-id="Wg11CpDkYeBLJIyfxFiZf0"><b data-page-node-id="4ombIKEcA38OSFwwczexe8" data-zh="次元星徽 · 侧面" data-en="DIMENSION STAR · SIDE">次元星徽 · 侧面</b><span data-page-node-id="ISpafmcmt31xsRdAZH2zrK" data-zh='BUTTON · DUAL MIC<br>METAL FRAME' data-en='BUTTON · DUAL MIC<br>METAL FRAME'>BUTTON · DUAL MIC<br data-page-node-id="4CHWFhkM2DZTnO2ftdfhUt">METAL FRAME</span></figcaption>
+      </figure>
+      <figure class="prod-card" data-page-node-id="XxDC5BjtD5A0BARk4xQeMr">
+        <div class="ph" data-page-node-id="XpRfwz6O4RjrqLMimMlvk6"><img src="assets/product-front-clean.png" alt="次元星徽 正面外观（已抠图 · 已去除屏幕反光）" loading="lazy" data-page-node-id="X3h700rh8BhWC1WEjpnHNr" /></div>
+        <div class="tag" data-page-node-id="b6h05RS6Ukq3Ulg1lNWNLq" data-zh="FRONT · 圆屏正面" data-en="FRONT · ROUND FACE">FRONT · 圆屏正面</div>
+        <figcaption class="cap" data-page-node-id="oWtjAv9ffMwMmxMs36rvLG"><b data-page-node-id="fHgm9N3lkPfvw9uMhBAbyP" data-zh="次元星徽 · 正面" data-en="DIMENSION STAR · FRONT">次元星徽 · 正面</b><span data-page-node-id="NN2fUUDAMzt9m7Nc0PgLva" data-zh='ROUND 360×360<br>DISPLAY' data-en='ROUND 360×360<br>DISPLAY'>ROUND 360×360<br data-page-node-id="NpECv7GDlHAIBZmeARr6vg">DISPLAY</span></figcaption>
+      </figure>
+    </div>
+
+    <div class="hw" data-page-node-id="QhvkWsu9W1554L9gVFjftr">
+      <div data-page-node-id="3ogdV44yLIkDsQSJdScsst">
+        <div class="hw-list rv" data-page-node-id="vcKlLjPiRd7FtDyPwig9sd">
+          <div class="hw-row" data-page-node-id="YbpFCZ77R1r4fqlu3fJf9B"><span class="kk" data-zh="开发板" data-en="Dev Board" data-page-node-id="R2HEhx68vSocbIl9KrooND">开发板</span><span class="vv" data-page-node-id="fNTdAaIFGFkvdoS9Eh9SqG" data-zh="ESP32-S3-Touch-LCD-1.85B" data-en="ESP32-S3-Touch-LCD-1.85B">ESP32-S3-Touch-LCD-1.85B</span></div>
+          <div class="hw-row" data-page-node-id="Hg3rxAz7XhJD4oZ8HEZEB6"><span class="kk" data-zh="语音链路" data-en="Voice Chain" data-page-node-id="5KBNUszXOQrNLITj367SQU">语音链路</span><span class="vv" data-page-node-id="6WrOAWoT6LBFdkeY55B4Cy" data-zh="LOCAL ASR → CLOUD LLM → LOCAL TTS" data-en="LOCAL ASR → CLOUD LLM → LOCAL TTS">LOCAL ASR → CLOUD LLM → LOCAL TTS</span></div>
+          <div class="hw-row" data-page-node-id="9YUvQ38faOftmMDtn1zYMd"><span class="kk" data-zh="通信" data-en="Transport" data-page-node-id="5lHbkfjitwkAd8L4IB7WHb">通信</span><span class="vv" data-page-node-id="OrUGB2Jle0IyWbZyDwqrrH" data-zh="WebSocket / HALF-DUPLEX" data-en="WebSocket / HALF-DUPLEX">WebSocket / HALF-DUPLEX</span></div>
+          <div class="hw-row" data-page-node-id="UYF4np0Z1BPC7OFSwqjusC"><span class="kk" data-zh="推理端" data-en="Inference" data-page-node-id="dhGa9ZRAH3mM4ZJ4V8bIhS">推理端</span><span class="vv" data-page-node-id="c4USZxIShYRpYHbYw3pYMv" data-zh="Windows + RTX 5070" data-en="Windows + RTX 5070">Windows + RTX 5070</span></div>
+          <div class="hw-row" data-page-node-id="y7W6syB0vuPTyJ1Hk2f1KG"><span class="kk" data-zh="人设载体" data-en="Persona" data-page-node-id="0bfV5FJuFXm9fIaBpCxIbQ">人设载体</span><span class="vv" data-page-node-id="fkSwrvwUzvD2ND51HBgabi" data-zh="CHARACTER CARD · YAML / JSON" data-en="CHARACTER CARD · YAML / JSON">CHARACTER CARD · YAML / JSON</span></div>
+          <div class="hw-row" data-page-node-id="WaPS47fP3zCT8f4a7SHfux"><span class="kk" data-zh="形态" data-en="Form Factor" data-page-node-id="JGGUS86xKT7Sk6mEbnAGr6">形态</span><span class="vv" data-zh="可佩戴圆形徽章" data-en="WEARABLE ROUND BADGE" data-page-node-id="4hGnEtqjWkv7KwCHrfrCvo">可佩戴圆形徽章</span></div>
+        </div>
+        <p class="rv" style="margin-top:22px;font-size:11.5px;color:#5f5875;line-height:1.9" data-zh="* 参数为当前基线，最终以 HARDWARE.md 与实机测试为准。" data-en="* Baseline values; HARDWARE.md and bench tests are authoritative." data-page-node-id="tjQwRsq7DC5kviV3B0Jzt8">* 参数为当前基线，最终以 HARDWARE.md 与实机测试为准。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="outro" data-page-node-id="ABJ52YC8pwYLIOCdgTPObe">
+  <div class="wrap" data-page-node-id="Fyyans1AXEVVE4MQI6vnef">
+    <p class="q rv" data-page-node-id="4VV6gf2cRDjb254gkslEqC"><span data-zh="让每一枚徽章，" data-en="May every badge " data-page-node-id="7hVCMvAFcvE7kzFcqv94mD">让每一枚徽章，</span><em data-zh="都住进一个活着的角色。" data-en="house a living character." data-page-node-id="syJwAB5DjjYPJambjTjVyR">都住进一个活着的角色。</em></p>
+    <p class="s rv" data-zh="DIMENSION STAR · 2026 项目汇报" data-en="DIMENSION STAR · PROJECT REVIEW 2026" data-page-node-id="tVL2oAGtawBn6ptKRxdCbO">DIMENSION STAR · 2026 项目汇报</p>
+  </div>
+  <div class="marquee" data-page-node-id="cGGYvVfhh77wrH97UCZ8uy">
+    <div class="track" data-page-node-id="fv4FHyJosJMAQeqDEIDmPI">
+      <span data-page-node-id="9Ph7gqFcU3apaIhLoBczJN"><i data-page-node-id="wlJAUDE6cudlBg7G3LfwNi" data-zh="✦" data-en="✦">✦</i><span data-zh="LOCAL ASR" data-en="LOCAL ASR">LOCAL ASR</span></span><span data-page-node-id="QoPDwQqjvdAu810AVT54W4"><i data-page-node-id="MQ8AlMfLtSOTPHlkZPQteo" data-zh="✦" data-en="✦">✦</i><span data-zh="CLOUD LLM" data-en="CLOUD LLM">CLOUD LLM</span></span><span data-page-node-id="i4ZDAg4oV9uz7dyQGSermS"><i data-page-node-id="9bkbvkqo4eA15gySzaBKDA" data-zh="✦" data-en="✦">✦</i><span data-zh="LOCAL TTS" data-en="LOCAL TTS">LOCAL TTS</span></span><span data-page-node-id="Mboa91iykERAcl2JGgQWBJ"><i data-page-node-id="CCtDM6BzqD7HcnFBttfarB" data-zh="✦" data-en="✦">✦</i><span data-zh="WEARABLE" data-en="WEARABLE">WEARABLE</span></span><span data-page-node-id="nAYyRqDpTX0GKr51Pl8TzB"><i data-page-node-id="UoCNFAea1SKZvBu0FGMgAJ" data-zh="✦" data-en="✦">✦</i><span data-zh="OFFLINE FIRST" data-en="OFFLINE FIRST">OFFLINE FIRST</span></span><span data-page-node-id="jwDoooU7BUpdJsvAQtKS2O"><i data-page-node-id="ol3v0L6bBml6Xn2Xj2MoOX" data-zh="✦" data-en="✦">✦</i><span data-zh="CHARACTER CARD" data-en="CHARACTER CARD">CHARACTER CARD</span></span>
+      <span data-page-node-id="xN9hDAGwaQEFMzyeKu9yQP"><i data-page-node-id="8PVz6ipwsBJ2EmNAsZDst4" data-zh="✦" data-en="✦">✦</i><span data-zh="LOCAL ASR" data-en="LOCAL ASR">LOCAL ASR</span></span><span data-page-node-id="cbT6rvfDCVDuTpHjkJ4B4u"><i data-page-node-id="bRhm6WoLYOwFdvPXnyIBBF" data-zh="✦" data-en="✦">✦</i><span data-zh="CLOUD LLM" data-en="CLOUD LLM">CLOUD LLM</span></span><span data-page-node-id="1Lg0PinodczWkMZX2yAIX9"><i data-page-node-id="sg8OA1a3Nvm7vSK3ZpMZB5" data-zh="✦" data-en="✦">✦</i><span data-zh="LOCAL TTS" data-en="LOCAL TTS">LOCAL TTS</span></span><span data-page-node-id="coXoW9Kk3qTXOWrEhlMtbp"><i data-page-node-id="IvAeWxMFXtYs9x2QnJmjZE" data-zh="✦" data-en="✦">✦</i><span data-zh="WEARABLE" data-en="WEARABLE">WEARABLE</span></span><span data-page-node-id="Hd98z4ZtvLOCr9JudgTGOz"><i data-page-node-id="aqSUpnegpuwcEZEGOuXrHi" data-zh="✦" data-en="✦">✦</i><span data-zh="OFFLINE FIRST" data-en="OFFLINE FIRST">OFFLINE FIRST</span></span><span data-page-node-id="XPmbQVsb89nSdSeT2AYtEz"><i data-page-node-id="N2QadMmmc1eGShlne2pK5A" data-zh="✦" data-en="✦">✦</i><span data-zh="CHARACTER CARD" data-en="CHARACTER CARD">CHARACTER CARD</span></span>
+    </div>
+  </div>
+  <div class="giant" data-page-node-id="fl7xMyKndDdkGg7HyK1fXO" data-zh="次元星徽" data-en="DIMENSION STAR">次元星徽</div>
+</section>
+</main>
+
+<footer data-page-node-id="2eNKg8jRDXF9vlv1ZITFSI">
+  <div class="f-in" data-page-node-id="GlR7kvNB0VMtmFyv5etXav">
+    <div data-page-node-id="uTC7l8OUtCMebQUWvv2ARm" data-zh="© 2026 麦谷 · 次元星徽" data-en="© 2026 MY GOO · DIMENSION STAR">© 2026 麦谷 · 次元星徽</div>
+    <div class="dis" data-zh="角色「爱莉希雅」立绘仅用于效果演示，相关版权归原权利方所有；正式发布请替换为自有或已授权美术。页面部分数据为示例值，请以仓库文档为准。" data-en="Character art of Elysia is shown for demo only; rights belong to the original holder. Replace with owned or licensed art before release. Some figures are samples; repo docs are authoritative." data-page-node-id="Oi9AJxk87h6JZPiOtcqJDP">角色「爱莉希雅」立绘仅用于效果演示，相关版权归原权利方所有；正式发布请替换为自有或已授权美术。页面部分数据为示例值，请以仓库文档为准。</div>
+  </div>
+</footer>
+
+<script>
+var lang = 'zh';
+var i18nNodes = document.querySelectorAll('[data-zh]');
+function applyLang(next){
+  lang = next;
+  for(var i=0;i<i18nNodes.length;i++){
+    var v = i18nNodes[i].getAttribute('data-' + lang);
+    if(v !== null) i18nNodes[i].innerHTML = v;
+  }
+  document.getElementById('langLabel').textContent = lang === 'zh' ? 'EN' : '中';
+  document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+}
+document.getElementById('langBtn').addEventListener('click', function(){ applyLang(lang === 'zh' ? 'en' : 'zh'); });
+
+var hdr = document.getElementById('hdr'), prog = document.getElementById('progress');
+function onScroll(){
+  var y = window.pageYOffset || document.documentElement.scrollTop;
+  if(y > 40) hdr.classList.add('scrolled'); else hdr.classList.remove('scrolled');
+  var h = document.documentElement.scrollHeight - window.innerHeight;
+  prog.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+}
+window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+var burger = document.getElementById('burger'), menu = document.getElementById('menu');
+burger.addEventListener('click', function(){ menu.classList.toggle('open'); });
+Array.prototype.forEach.call(menu.querySelectorAll('a'), function(a){
+  a.addEventListener('click', function(){ menu.classList.remove('open'); });
+});
+
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:.1, rootMargin:'0px 0px -8% 0px'});
+Array.prototype.forEach.call(document.querySelectorAll('.rv, .rv-l'), function(el,i){
+  el.style.transitionDelay = (Math.min(i,6) * 40) + 'ms';
+  io.observe(el);
+});
+
+var barIO = new IntersectionObserver(function(es){
+  es.forEach(function(e){
+    if(e.isIntersecting){
+      var bs = e.target.querySelectorAll('.bar i');
+      Array.prototype.forEach.call(bs, function(b,i){ setTimeout(function(){ b.style.width = b.getAttribute('data-w') + '%'; }, i * 140); });
+      barIO.unobserve(e.target);
+    }
+  });
+},{threshold:.35});
+var barsEl = document.getElementById('bars'); if(barsEl) barIO.observe(barsEl);
+
+var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var heroChar = document.getElementById('heroChar');
+var mx = 0, my = 0, tx = 0, ty = 0;
+window.addEventListener('mousemove', function(e){
+  mx = (e.clientX / window.innerWidth - .5);
+  my = (e.clientY / window.innerHeight - .5);
+});
+function loop(){
+  tx += (mx * 26 - tx) * .06;
+  ty += (my * 16 - ty) * .06;
+  if(heroChar){
+    var sc = window.pageYOffset || 0;
+    heroChar.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + (ty - sc * .05).toFixed(2) + 'px,0)';
+  }
+  requestAnimationFrame(loop);
+}
+if(!reduce && window.innerWidth > 980) loop();
+
+(function(){
+  var c = document.getElementById('petals'), ctx = c.getContext('2d');
+  var W = 0, H = 0, parts = [];
+  function resize(){
+    W = c.width = window.innerWidth;
+    H = c.height = window.innerHeight;
+    c.style.width = W + 'px'; c.style.height = H + 'px';
+  }
+  resize(); window.addEventListener('resize', resize);
+  var N = window.innerWidth < 700 ? 20 : 44;
+  for(var i = 0; i < N; i++){
+    parts.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 2.2 + .6,
+      vy: -(Math.random() * .2 + .05),
+      vx: (Math.random() - .5) * .2,
+      a: Math.random() * .45 + .12,
+      p: Math.random() * 6.28,
+      c: Math.random() > .5 ? '255,140,196' : '190,160,255'
+    });
+  }
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    for(var i = 0; i < parts.length; i++){
+      var p = parts[i];
+      p.p += .012;
+      p.x += p.vx + Math.sin(p.p) * .2;
+      p.y += p.vy;
+      if(p.y < -12){ p.y = H + 12; p.x = Math.random() * W; }
+      if(p.x < -12) p.x = W + 12;
+      if(p.x > W + 12) p.x = -12;
+      var al = p.a * (.6 + Math.sin(p.p) * .4);
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(' + p.c + ',' + al.toFixed(3) + ')';
+      ctx.arc(p.x, p.y, p.r, 0, 6.284);
+      ctx.fill();
+      if(p.r > 2){
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(' + p.c + ',' + (al * .16).toFixed(3) + ')';
+        ctx.arc(p.x, p.y, p.r * 3.2, 0, 6.284);
+        ctx.fill();
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  if(!reduce) draw();
+})();
+
+var secs = ['character','voice','road','specs'].map(function(id){ return document.getElementById(id); });
+var navLinks = document.querySelectorAll('.menu a');
+window.addEventListener('scroll', function(){
+  var y = (window.pageYOffset || 0) + window.innerHeight * .3;
+  var cur = -1;
+  for(var i = 0; i < secs.length; i++){ if(secs[i] && secs[i].offsetTop <= y) cur = i; }
+  Array.prototype.forEach.call(navLinks, function(a, i){ a.classList.toggle('on', i === cur); });
+}, {passive:true});
+</script>
+</body>
+</html>
